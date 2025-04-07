@@ -126,4 +126,37 @@ export const foodPlaces = [
     image: "/images/threebygaramika.jpg",
     googlemaps: "https://maps.app.goo.gl/Wc7843A3zaAKuCrK6"
   },
+  {
+    id: "14",
+    name: "Khao Soi > Kin Leaw Chill Thai Food",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: { lat: 1.2797935601217907, lng: 103.84379077938044 },
+    rating: 5,
+    review: "a rich and aromatic Northern Thai curry noodle dish, with crispy and soft egg noodles and a creamy coconut based broth. This place is known for serving one of the most authentic versions of Khao Soi in Singapore. If you're a fan of Thai food, Kin Leaw Chill Thai Food is a must-visit spot for their authentic thai flavours with an extensive menu of comforting dishes.",
+    image: "/images/kinleawchillthaifood.jpg",
+    googlemaps: "https://maps.app.goo.gl/6HrEmugsDksnYkGo8"
+  },
+  {
+    id: "15",
+    name: "Prawn Noodles > Lao Ban Niang",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: { lat: 1.3227147420430763, lng: 103.86686360955042 },
+    rating: 5,
+    review: "rich, umami-packed broth along with fresh, juicy prawns. Lao Ban Niang is a real hidden gem that not many people know about, but they definitely serve one of the better prawn noodles in Singapore, so if you're ever craving a solid bowl of prawn noodles, definitely check them out!",
+    image: "/images/laobanniangprawnnoodles.jpg",
+    googlemaps: "https://maps.app.goo.gl/VSutY1kyXGNxB5UL9"
+  },
+  {
+    id: "16",
+    name: "Hor Fun > Kok Sen Restaurant",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: { lat: 1.279439202897575, lng: 103.84161013342771 },
+    rating: 5,
+    review: "a family-run zi char spot that's not only loved by locals but also Michelin-recommended for their outstanding dishes. Known for their big prawns hor fun, this dish is a crowd favorite for its silky noodles, rich and savory gravy, and juicy prawns cooked to perfection. Kok Sen isn't just about hor fun, they're a must-visit for anyone looking to explore authentic Singapore zi char.",
+    image: "/images/koksenrestaurant.jpg",
+    googlemaps: "https://maps.app.goo.gl/24aAJprfpqjqo1at9"
+  },
 ];
