@@ -73,7 +73,7 @@ export const foodPlaces = [
   },
   {
     id: "9",
-    name: "Mee Rebus from Yunos N Family",
+    name: "Mee Rebus > Yunos N Family",
     influencer: "Zermatt Neo",
     profilephoto: "/images/zermattneo.jpg",
     coordinates: { lat: 1.3718868833685227, lng: 103.84642965767216 },
@@ -81,5 +81,49 @@ export const foodPlaces = [
     review: "one of the best Mee Rebus in Singapore! This family-run stall has been around for decades using a 60 year-old family recipe, and their rich, flavourful gravy paired with yellow noodles is a favourite among locals.",
     image: "/images/yunosnfamily.jpg",
     googlemaps: "https://maps.app.goo.gl/Ye7VQx7xXgrSCPkDA"
-  }
+  },
+  {
+    id: "10",
+    name: "Yong Tau Foo > Hup Chong Hakka",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: { lat: 1.3386372430412696, lng: 103.84435045559097 },
+    rating: 5,
+    review: "a well-known spot famous for their authentic Hakka-style yong tau foo that always has a long queue! Unlike the usual YTF you find at hawker centers, Hakka yong tau foo is stuffed generously with minced meat instead of fish paste, which gives it a more robust flavour.",
+    image: "/images/hupchonghakkayongdoufoo.jpg",
+    googlemaps: "https://maps.app.goo.gl/4qkjaRwe18Z5wT666"
+  },
+  {
+    id: "11",
+    name: "Prata Tsunami > R.K. Eating House",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: { lat: 1.364526298993539, lng: 103.86603582494463 },
+    rating: 5,
+    review: "opening hours 24/7, making them a go-to supper spot for Singaporeans to satisfy their late night roti prata cravings. This prata tsunami was flooded with 5 different gravy - hence it's name Tsunami. It's got curry and topped with tikka chicken, eggs and sambal.",
+    image: "/images/rkeatinghouse.jpg",
+    googlemaps: "https://maps.app.goo.gl/if89JR5Duz8fTfX2A"
+  },
+  {
+    id: "12",
+    name: "Curry Puff > J2 Famous Crispy Curry Puff",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: { lat: 1.2793394685371828, lng: 103.84658621536033 },
+    rating: 5,
+    review: "michelin-recommended, known for their crispy and flaky puffs with flavorful fillings inside. This stall is a favourite among locals and it's definitely rated as one of Singapore's top-rated curry puffs! Each puff is generously stuffed with filling and I tried all the four different flavours they offered, which includes their signature curry chicken, black pepper chicken, sardine and yam paste puff. All of them were freshly prepared and tasted so good!",
+    image: "/images/j2famouscrispycurrypuff.jpg",
+    googlemaps: "https://maps.app.goo.gl/2WgdsJMkYEC8eh9g7"
+  },
+  {
+    id: "13",
+    name: "Fried Oxtail Rice > THREE. by Garamika",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: { lat: 1.338832244321158, lng: 103.84967107951154 },
+    rating: 5,
+    review: "run by three Indonesian-born, Gen Z sisters. Despite their young age, their restaurant has been receiving great reviews for its authentic and homely Indonesian cuisine, with dishes like ayam bakar, gado gado, and oxtail soup. Oxtail is deep-fried to perfection, giving it a crispy outer layer while remaining juicy and tender inside. If you love Indonesian food, this is a spot you don't want to miss!",
+    image: "/images/threebygaramika.jpg",
+    googlemaps: "https://maps.app.goo.gl/Wc7843A3zaAKuCrK6"
+  },
 ];
