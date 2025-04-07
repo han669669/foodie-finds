@@ -14,23 +14,11 @@ const MAX_SPEED = 60;  // km/h, expressway speed
 const SPEED_K = 0.3;   // controls transition sharpness
 
 // Road hierarchy speed adjustment factors based on trip length (km)
-const ROAD_HIERARCHY_SPEED_ADJUST = [
-  { maxDistance: 2, factor: 0.8 },    // mostly local roads, slower
-  { maxDistance: 10, factor: 1.0 },   // mixed
-  { maxDistance: Infinity, factor: 1.2 } // mostly expressways, faster
-];
-
-// Turn penalty estimation
 const TURN_TIME_SEC = 10; // seconds per expected turn
 
-// Traffic light delay estimation
-const TRAFFIC_LIGHT_DELAY_SEC = 30; // seconds per expected light
+// Traffic light delay estimation (removed)
 
-// Day/night adjustment factors
-const DAY_NIGHT_FACTORS = {
-  day: 1.0,
-  night: 0.9
-};
+// Day/night adjustment factors (removed)
 
 // Time of day and weekday/weekend factors
 const TIME_FACTORS = {
@@ -144,17 +132,9 @@ function App() {
           // --- Dynamic speed calculation ---
           let avgSpeed = BASE_SPEED + (MAX_SPEED - BASE_SPEED) * (1 - Math.exp(-SPEED_K * blendedDist));
 
-          // --- Road hierarchy influence ---
-          const roadFactorObj = ROAD_HIERARCHY_SPEED_ADJUST.find(p => blendedDist <= p.maxDistance);
-          avgSpeed *= roadFactorObj.factor;
-
           // --- Turn penalty estimation ---
           const estimatedTurns = Math.max(1, Math.round((dLat + dLon) / 0.5)); // assume 1 turn per 0.5 km of grid distance
           const turnDelayMinutes = (TURN_TIME_SEC * estimatedTurns) / 60;
-
-          // --- Traffic light delay estimation ---
-          const estimatedLights = Math.max(1, Math.round((dLat + dLon) / 0.5)); // assume 1 light per 0.5 km
-          const lightDelayMinutes = (TRAFFIC_LIGHT_DELAY_SEC * estimatedLights) / 60;
 
           // --- Time of day adjustment ---
           const now = new Date();
@@ -170,9 +150,6 @@ function App() {
           }
           const timeFactor = TIME_FACTORS[timeKey];
 
-          // --- Day/night adjustment ---
-          const dayNightFactor = (hour >= 22 || hour <= 5) ? DAY_NIGHT_FACTORS.night : DAY_NIGHT_FACTORS.day;
-
           // --- Route complexity penalty ---
           // Placeholder: assume all routes cross a river (for demo)
           const complexityFactor = ROUTE_COMPLEXITY_PENALTY;
@@ -181,11 +158,8 @@ function App() {
           const adjustedDistance = blendedDist * timeFactor * complexityFactor;
           let etaMinutes = (adjustedDistance / avgSpeed) * 60;
 
-          // Add turn and traffic light delays
-          etaMinutes += turnDelayMinutes + lightDelayMinutes;
-
-          // Apply day/night factor
-          etaMinutes *= dayNightFactor;
+          // Add turn delay only
+          etaMinutes += turnDelayMinutes;
 
           return {
             ...place,
@@ -419,7 +393,7 @@ return (
             <p className="mt-3">This application uses your current location to find nearby recommendations within a 60-minute drive based on typical urban traffic conditions. Your location data is not stored as it is unnecessary.</p>
             <br />
             <small>
-                This app estimates travel time without relying on external APIs or large country-specific datasets. It combines geodesic and grid-based distance formulas with heuristic adjustments for road types, turns, traffic lights, and time of day. The calculations incorporate curvature penalties and dynamic speed modeling to better reflect real-world driving conditions. This lightweight approach provides realistic ETAs while respecting user privacy and minimizing data usage.
+                This app estimates travel time without relying on external APIs or large country-specific datasets. It combines geodesic and grid-based distance formulas with heuristic adjustments for turns, time of day, curvature penalties, and dynamic speed modeling. The approach excludes detailed road hierarchy, traffic light delays, and day/night factors for simplicity. This lightweight method provides realistic ETAs while respecting user privacy and minimizing data usage.
             </small>
         </footer>
     </div>

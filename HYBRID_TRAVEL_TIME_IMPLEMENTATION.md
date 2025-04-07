@@ -14,9 +14,8 @@
 - **Blended Distance**: Combines vincenty geodesic and Manhattan grid distances for better urban modeling
 - **Curvature Penalty**: Adjusts for typical road bends beyond straight-line
 - **Dynamic Speed Model**: Calculates average speed based on trip length, transitioning from city to expressway speeds
-- **Road Hierarchy Influence**: Adjusts speed based on likely road types (local, arterial, expressway)
-- **Turn & Traffic Light Penalties**: Adds delays proportional to expected turns and intersections
-- **Time of Day & Day/Night Adjustments**: Penalizes during peak hours, reduces at night
+- **Turn Penalty**: Adds delay proportional to expected number of turns
+- **Time of Day Adjustment**: Penalizes during peak hours, reduces during off-peak
 - **Route Complexity Penalty**: Adds fixed penalty for complex routes (e.g., river crossings)
 - **Filtering**: Only shows recommendations within **60 minutes** estimated travel time
 
@@ -29,7 +28,7 @@
 - ETA is computed as:
 
 ```
-ETA = ((blended distance * penalties) / dynamic average speed) * 60 + turn delays + traffic light delays
+ETA = ((blended distance * penalties) / dynamic average speed) * 60 + turn delays
 ```
 
 - The **displayed distance** is the adjusted, realistic travel distance after penalties

@@ -15,6 +15,21 @@ A fast, privacy-friendly React + Vite web app for discovering influencer-recomme
 
 ---
 
+## Tech Stack
+
+- **React 18** with Hooks
+- **Vite** for fast development and builds
+- **Tailwind CSS** for styling
+- **Font Awesome** for icons
+- **Google Fonts** (Poppins)
+- **PostCSS** for CSS processing
+- **JavaScript (ES6+)**
+- **Geolocation API** for user location
+- **Custom heuristic ETA engine** (no external APIs, no large datasets)
+- **Static data** stored locally (no backend)
+
+---
+
 ## How It Works
 
 - Uses your browser's Geolocation API to get your current location
@@ -23,15 +38,6 @@ A fast, privacy-friendly React + Vite web app for discovering influencer-recomme
   - Adjusts for road types, turns, traffic lights, time of day, and route complexity
   - Filters results within 60 minutes estimated driving time
 - Displays influencer-reviewed food spots sorted by quickest arrival time
-
----
-
-## Tech Stack
-
-- **React 18** with Hooks
-- **Vite** for lightning-fast development and builds
-- **Tailwind CSS** for styling
-- **Font Awesome** for icons
 
 ---
 
