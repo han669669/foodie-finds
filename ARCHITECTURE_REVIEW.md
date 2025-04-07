@@ -1,8 +1,10 @@
 # Architecture Review: imHungryAF React + Vite Web Application
 
+---
+
 ## 1. Application Overview
 - **Type**: Single Page Application (SPA) for food recommendations
-- **Core Functionality**: Location-based restaurant discovery
+- **Core Functionality**: Location-based restaurant discovery with realistic ETA filtering
 - **Tech Stack**:
   - React 18 with Hooks
   - Vite for build tooling and dev server
@@ -10,7 +12,10 @@
   - Font Awesome for icons
   - Google Fonts (Poppins)
 
+---
+
 ## 2. Architectural Components
+
 ```mermaid
 graph TD
     subgraph React Components
@@ -24,7 +29,7 @@ graph TD
 
     subgraph Business Logic (Hooks)
       B1[Geolocation API]
-      B2[Distance Calculation (Vincenty)]
+      B2[Advanced ETA Calculation]
       B3[Filtering & Sorting]
     end
 
@@ -47,14 +52,18 @@ graph TD
     B1 --> C2
 ```
 
+---
+
 ## 3. Strengths
 - **Modern React Architecture**: Component-based, declarative UI
 - **Clean Separation**: UI, logic, and data modularized
 - **Fast Development**: Vite enables instant HMR and fast builds
 - **Responsive Design**: Tailwind CSS utility classes
-- **Accurate Geolocation Filtering**: Vincenty formula for distance
+- **Realistic ETA Filtering**: Advanced formula-based travel time estimation without external APIs
 - **Improved Maintainability**: No manual DOM manipulation
 - **Production-Ready Styling**: Tailwind via PostCSS, no CDN
+
+---
 
 ## 4. Weaknesses & Technical Debt
 - **Data Management**:
@@ -69,6 +78,8 @@ graph TD
 - **Features**:
   - No error boundaries in React
   - No offline support or caching
+
+---
 
 ## 5. Key Improvement Opportunities
 1. **Data Layer**:
@@ -87,7 +98,10 @@ graph TD
    - Add unit and integration tests
    - Use TypeScript for type safety
 
+---
+
 ## 6. Risk Assessment
+
 | Risk | Severity | Mitigation |
 |-------|----------|------------|
 | Hardcoded data | Medium | Move to API |

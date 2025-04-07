@@ -1,4 +1,51 @@
 import React, { useState } from 'react';
+
+// --- Enhanced Travel Time Estimation Constants ---
+
+// Blend ratio between vincenty and Manhattan distances
+const BLEND_RATIO = 0.5; // 0.5 = equal weight
+
+// Curvature penalty factor
+const CURVATURE_FACTOR = 1.1;
+
+// Dynamic speed function parameters
+const BASE_SPEED = 20; // km/h, typical city speed
+const MAX_SPEED = 60;  // km/h, expressway speed
+const SPEED_K = 0.3;   // controls transition sharpness
+
+// Road hierarchy speed adjustment factors based on trip length (km)
+const ROAD_HIERARCHY_SPEED_ADJUST = [
+  { maxDistance: 2, factor: 0.8 },    // mostly local roads, slower
+  { maxDistance: 10, factor: 1.0 },   // mixed
+  { maxDistance: Infinity, factor: 1.2 } // mostly expressways, faster
+];
+
+// Turn penalty estimation
+const TURN_TIME_SEC = 10; // seconds per expected turn
+
+// Traffic light delay estimation
+const TRAFFIC_LIGHT_DELAY_SEC = 30; // seconds per expected light
+
+// Day/night adjustment factors
+const DAY_NIGHT_FACTORS = {
+  day: 1.0,
+  night: 0.9
+};
+
+// Time of day and weekday/weekend factors
+const TIME_FACTORS = {
+  weekday_peak: 1.2,
+  weekday_offpeak: 1.0,
+  weekend_peak: 1.1,
+  weekend_offpeak: 1.0
+};
+
+// Simple route complexity penalty (e.g., river crossing)
+const ROUTE_COMPLEXITY_PENALTY = 1.1; // 10% increase if complex
+
+// Helper: degrees to km (approximate, Singapore latitude)
+const KM_PER_DEG_LAT = 111.32;
+const KM_PER_DEG_LON = 111.32 * Math.cos(1.3 * Math.PI / 180); // ~cos(latitude in radians)
 import { foodPlaces } from './data';
 
 function vincentyDistance(lat1, lon1, lat2, lon2) {
@@ -78,16 +125,74 @@ function App() {
         };
         console.log('Detected user location:', userLoc.lat, userLoc.lng);
         const nearby = foodPlaces.map(place => {
-          const dist = vincentyDistance(
+          const vincentyDist = vincentyDistance(
             userLoc.lat, userLoc.lng,
             place.coordinates.lat, place.coordinates.lng
           );
+
+          // Manhattan distance approximation
+          const dLat = Math.abs(userLoc.lat - place.coordinates.lat) * KM_PER_DEG_LAT;
+          const dLon = Math.abs(userLoc.lng - place.coordinates.lng) * KM_PER_DEG_LON;
+          const manhattanDist = dLat + dLon;
+
+          // Blend vincenty and Manhattan
+          let blendedDist = BLEND_RATIO * vincentyDist + (1 - BLEND_RATIO) * manhattanDist;
+
+          // Apply curvature penalty
+          blendedDist *= CURVATURE_FACTOR;
+
+          // --- Dynamic speed calculation ---
+          let avgSpeed = BASE_SPEED + (MAX_SPEED - BASE_SPEED) * (1 - Math.exp(-SPEED_K * blendedDist));
+
+          // --- Road hierarchy influence ---
+          const roadFactorObj = ROAD_HIERARCHY_SPEED_ADJUST.find(p => blendedDist <= p.maxDistance);
+          avgSpeed *= roadFactorObj.factor;
+
+          // --- Turn penalty estimation ---
+          const estimatedTurns = Math.max(1, Math.round((dLat + dLon) / 0.5)); // assume 1 turn per 0.5 km of grid distance
+          const turnDelayMinutes = (TURN_TIME_SEC * estimatedTurns) / 60;
+
+          // --- Traffic light delay estimation ---
+          const estimatedLights = Math.max(1, Math.round((dLat + dLon) / 0.5)); // assume 1 light per 0.5 km
+          const lightDelayMinutes = (TRAFFIC_LIGHT_DELAY_SEC * estimatedLights) / 60;
+
+          // --- Time of day adjustment ---
+          const now = new Date();
+          const hour = now.getHours();
+          const isWeekend = now.getDay() === 0 || now.getDay() === 6;
+          const isPeak = (hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19);
+
+          let timeKey = '';
+          if (isWeekend) {
+            timeKey = isPeak ? 'weekend_peak' : 'weekend_offpeak';
+          } else {
+            timeKey = isPeak ? 'weekday_peak' : 'weekday_offpeak';
+          }
+          const timeFactor = TIME_FACTORS[timeKey];
+
+          // --- Day/night adjustment ---
+          const dayNightFactor = (hour >= 22 || hour <= 5) ? DAY_NIGHT_FACTORS.night : DAY_NIGHT_FACTORS.day;
+
+          // --- Route complexity penalty ---
+          // Placeholder: assume all routes cross a river (for demo)
+          const complexityFactor = ROUTE_COMPLEXITY_PENALTY;
+
+          // --- Final ETA ---
+          const adjustedDistance = blendedDist * timeFactor * complexityFactor;
+          let etaMinutes = (adjustedDistance / avgSpeed) * 60;
+
+          // Add turn and traffic light delays
+          etaMinutes += turnDelayMinutes + lightDelayMinutes;
+
+          // Apply day/night factor
+          etaMinutes *= dayNightFactor;
+
           return {
             ...place,
-            distanceKm: dist,
-            minutesAway: Math.round(dist)
+            distanceKm: adjustedDistance,
+            minutesAway: Math.round(etaMinutes)
           };
-        }).filter(p => p.distanceKm <= 30);
+        }).filter(p => p.minutesAway <= 60);
 
         if (nearby.length > 0) {
           setResults(nearby);
@@ -104,8 +209,8 @@ function App() {
   };
 
   const sortedResults = [...results].sort((a, b) => {
-    if (sortOrder === 'nearest') return a.distanceKm - b.distanceKm;
-    else return b.distanceKm - a.distanceKm;
+    if (sortOrder === 'nearest') return a.minutesAway - b.minutesAway;
+    else return b.minutesAway - a.minutesAway;
   });
 
 return (
@@ -127,12 +232,42 @@ return (
                         <i className="fas fa-utensils text-white text-4xl"></i>
                     </div>
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">Find Nearby Eats</h2>
-                    <p className="text-gray-600 mb-6">Get personalized food recommendations from influencers based on your current location.</p>
+                    <p className="text-gray-600 mb-6">Get personalized food recommendations from influencers within 60 minutes driving distance based on your current location.</p>
                     <button onClick={requestLocation} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all">
                         <i className="fas fa-location-arrow mr-2"></i> Find Food Near Me
                     </button>
                 </div>
             </div>
+        )}
+
+        {view === 'home' && (
+          <>
+            {/* Feature Highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+              <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
+                <div className="text-pink-500 mb-2">
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                </div>
+                <p className="text-gray-700">"imHungryAF's recommendations never disappoint!"</p>
+              </div>
+              <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
+                <div className="text-pink-500 mb-2">
+                  <i className="fas fa-route"></i>
+                </div>
+                <p className="text-gray-700">All recommendations within 60 minutes driving distance from you</p>
+              </div>
+              <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
+                <div className="text-pink-500 mb-2">
+                  <i className="fas fa-user-check"></i>
+                </div>
+                <p className="text-gray-700">Only places personally reviewed by food influencers</p>
+              </div>
+            </div>
+          </>
         )}
 
         {view === 'loading' && (
@@ -259,9 +394,9 @@ return (
                     <i className="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">Location Access Required</h3>
-                <p className="text-gray-600 mb-6">We couldn't access your location. Please enable location services in your browser settings to get personalized recommendations.</p>
-                <button onClick={requestLocation} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
-                    <i className="fas fa-sync-alt mr-2"></i> Try Again
+                <p className="text-gray-600 mb-6">We couldn't access your location. Please enable location services in your browser settings and manually refresh the page to allow the location permission prompt to appear again.</p>
+                <button onClick={() => window.location.reload()} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
+                <i className="fas fa-sync-alt mr-2"></i> Refresh Page
                 </button>
             </div>
         )}
@@ -272,7 +407,7 @@ return (
                     <i className="fas fa-search text-yellow-500 text-2xl"></i>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">No Nearby Spots Found</h3>
-                <p className="text-gray-600 mb-6">We couldn't find any imHungryAF recommended places within 30 minutes of your location. Check back later as we add more recommendations!</p>
+                <p className="text-gray-600 mb-6">We couldn't find any imHungryAF recommended places within 60 minutes of your location. Check back later as we add more recommendations!</p>
                 <button onClick={() => setView('home')} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
                     <i className="fas fa-home mr-2"></i> Back to Home
                 </button>
@@ -280,12 +415,11 @@ return (
         )}
 
         <footer className="mt-16 text-center text-gray-500 text-sm">
-            <p>© 2025 imHungryAF. All food recommendations are reviewed by influencers, data manually curated by me.</p>
-            <p className="mt-3">This application uses your current location to find nearby recommendations within a 30-minute drive at an average speed of 60 km/h. Your location data is not stored as it is unnecessary.</p>
+            <p>© 2025 imHungryAF. All food recommendations are reviewed by influencers, data manually curated and web app made by <a href="https://www.craftedbyhan.xyz/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">han</a> 😊</p>
+            <p className="mt-3">This application uses your current location to find nearby recommendations within a 60-minute drive based on typical urban traffic conditions. Your location data is not stored as it is unnecessary.</p>
             <br />
             <small>
-                Vincenty formula used for calculating the distance between two points on the Earth's surface given their latitude and longitude. It is more accurate than Haversine formula for small distances and takes into account the Earth's ellipsoidal shape. Learn more{' '}
-                <a href="https://community.esri.com/t5/coordinate-reference-systems-blog/distance-on-an-ellipsoid-vincenty-s-formulae/ba-p/902053" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">here</a>.
+                This app estimates travel time without relying on external APIs or large country-specific datasets. It combines geodesic and grid-based distance formulas with heuristic adjustments for road types, turns, traffic lights, and time of day. The calculations incorporate curvature penalties and dynamic speed modeling to better reflect real-world driving conditions. This lightweight approach provides realistic ETAs while respecting user privacy and minimizing data usage.
             </small>
         </footer>
     </div>

@@ -79,7 +79,7 @@ export const foodPlaces = [
     coordinates: { lat: 1.3718868833685227, lng: 103.84642965767216 },
     rating: 5,
     review: "one of the best Mee Rebus in Singapore! This family-run stall has been around for decades using a 60 year-old family recipe, and their rich, flavourful gravy paired with yellow noodles is a favourite among locals.",
-    image: "/images/yunosnfamily.png",
+    image: "/images/yunosnfamily.jpg",
     googlemaps: "https://maps.app.goo.gl/Ye7VQx7xXgrSCPkDA"
   }
 ];

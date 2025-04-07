@@ -1,141 +1,54 @@
-# Hybrid Travel Time System Implementation Plan
+# Hybrid Travel Time Estimation - Actual Implementation (No External APIs)
+
+---
 
 ## 1. Objectives
-- Achieve 85-90% of Google Maps accuracy
-- Keep data payload under 8MB
-- Maintain sub-100ms calculation time
-- Display both accurate distance (km) and time (mins)
+- Provide realistic ETA estimates without external APIs or large datasets
+- Accurately reflect real-world driving conditions
+- Fully integrated into the Vite + React app
 
-## 2. Architecture Overview
-```mermaid
-graph TD
-    A[User Location] --> B[Grid Lookup]
-    A --> C[Road Network]
-    B --> D[Base Time]
-    C --> E[Path Distance]
-    D --> F[Hybrid Calculation]
-    E --> F
-    F --> G[Display Results]
+---
+
+## 2. Core Approach
+
+- **Blended Distance**: Combines vincenty geodesic and Manhattan grid distances for better urban modeling
+- **Curvature Penalty**: Adjusts for typical road bends beyond straight-line
+- **Dynamic Speed Model**: Calculates average speed based on trip length, transitioning from city to expressway speeds
+- **Road Hierarchy Influence**: Adjusts speed based on likely road types (local, arterial, expressway)
+- **Turn & Traffic Light Penalties**: Adds delays proportional to expected turns and intersections
+- **Time of Day & Day/Night Adjustments**: Penalizes during peak hours, reduces at night
+- **Route Complexity Penalty**: Adds fixed penalty for complex routes (e.g., river crossings)
+- **Filtering**: Only shows recommendations within **60 minutes** estimated travel time
+
+---
+
+## 3. Implementation Details
+
+- All calculations are **formula-based** with configurable constants
+- No reliance on large country-specific datasets or external services
+- ETA is computed as:
+
+```
+ETA = ((blended distance * penalties) / dynamic average speed) * 60 + turn delays + traffic light delays
 ```
 
-## 3. Data Requirements
+- The **displayed distance** is the adjusted, realistic travel distance after penalties
+- Sorting is based on **ETA**, not raw distance
 
-### Grid Dataset (`gridData.json`)
-```javascript
-{
-  "cellSize": 0.009, // ~1km
-  "cells": {
-    "0_0": {
-      "center": [1.200,103.600],
-      "adjacent": ["0_1","1_0"],
-      "times": {
-        "0_1": {"peak":5,"offpeak":3,"distance":1.1},
-        "1_0": {"peak":6,"offpeak":4,"distance":1.0}
-      }
-    }
-    // ...700+ cells
-  }
-}
-```
+---
 
-### Road Network (`roadNetwork.json`)
-```javascript
-{
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [[103.8,1.3],[103.81,1.31]]
-      },
-      "properties": {
-        "type": "expressway",
-        "speed": 80,
-        "name": "ECP"
-      }
-    }
-    // ...10,000+ segments
-  ]
-}
-```
+## 4. User Interface Integration
 
-## 4. Implementation Steps
+- ETA and adjusted distance shown in results
+- Filtering and UI text updated to reflect **60-minute** radius
+- Feature highlights and footer updated to explain the approach
+- No user data stored; privacy-respecting
 
-### Phase 1: Data Preparation
-1. Generate grid dataset using QGIS + Singapore boundary
-2. Extract road network from OpenStreetMap
-3. Precompute cell-to-cell travel times
+---
 
-### Phase 2: Core Algorithms
-**Grid Lookup:**
-```javascript
-function getGridTime(originCell, destCell) {
-  return gridData.cells[originCell].times[destCell];
-}
-```
+## 5. Benefits
 
-**Pathfinding:**
-```javascript
-async function findShortestPath(origin, destination) {
-  // Uses A* algorithm with road network
-  return {
-    distance: 3.2, // km
-    time: 8 // mins
-  };
-}
-```
-
-### Phase 3: Hybrid Calculation
-```javascript
-function calculateMetrics(origin, destination) {
-  const grid = getGridTime(origin.gridCell, destination.gridCell);
-  const road = await findShortestPath(origin.coords, destination.coords);
-  
-  return {
-    // Use exact road distance
-    distanceKm: road.distance.toFixed(2),
-    // Weighted time estimate
-    minutesAway: Math.round((grid.time * 0.7) + (road.time * 0.3))
-  };
-}
-```
-
-## 5. Integration Plan
-
-1. **Data Loading**:
-   ```javascript
-   async function loadData() {
-     const [grid, roads] = await Promise.all([
-       fetch('/data/gridData.json'),
-       fetch('/data/roadNetwork.json') 
-     ]);
-     window.travelData = { grid, roads };
-   }
-   ```
-
-2. **UI Updates**:
-   - Add loading state during calculations
-   - Progressive enhancement from grid to hybrid
-
-3. **Performance Optimization**:
-   - Web Workers for pathfinding
-   - Data compression (Brotli)
-   - Cache frequently used routes
-
-## 6. Testing Strategy
-
-| Test Case | Expected Accuracy |
-|-----------|------------------|
-| CBD to Changi Airport | ±2 mins |
-| HDB to HDB | ±1 min |
-| Cross-island | ±3 mins |
-
-## 7. Maintenance
-- Monthly grid data updates
-- Quarterly road network refreshes
-- Usage analytics to identify hotspots
-
-## 8. Roadmap
-- v1: Basic hybrid (Q2 2025)
-- v2: Real-time traffic (Q4 2025)
-- v3: Predictive ETAs (2026)
+- Lightweight, fast, and privacy-friendly
+- Significantly more realistic than pure geodesic distance
+- Easily tunable via constants
+- No API costs or data maintenance burden
