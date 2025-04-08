@@ -153,10 +153,69 @@ export const foodPlaces = [
     name: "Hor Fun > Kok Sen Restaurant",
     influencer: "Zermatt Neo",
     profilephoto: "/images/zermattneo.jpg",
-    coordinates: { lat: 1.279439202897575, lng: 103.84161013342771 },
+    coordinates: {
+      lat: 1.279439202897575,
+      lng: 103.84161013342771
+    },
     rating: 5,
     review: "a family-run zi char spot that's not only loved by locals but also Michelin-recommended for their outstanding dishes. Known for their big prawns hor fun, this dish is a crowd favorite for its silky noodles, rich and savory gravy, and juicy prawns cooked to perfection. Kok Sen isn't just about hor fun, they're a must-visit for anyone looking to explore authentic Singapore zi char.",
     image: "/images/koksenrestaurant.jpg",
     googlemaps: "https://maps.app.goo.gl/24aAJprfpqjqo1at9"
+  },
+  {
+    id: "17",
+    name: "Korean Donkatsu > Myung Ga (명가) II",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3385625538576134,
+      lng: 103.77861415337343
+    },
+    rating: 5,
+    review: "an authentic Korean donkatsu spot right here in Singapore! serving some of the best Korean-style donkatsu in town, Myung Ga II isn't just about portions, it's about quality, tradition, and a cozy dining experience that feels like a trip to Korea. Their crispy, golden-brown pork cutlets are fried to perfection and paired with their rich, savory sauce, every bite takes you straight to the heart of Korea.",
+    image: "/images/myungga.jpg",
+    googlemaps: "https://maps.app.goo.gl/TvaYRM6sRyciWu5b7"
+  },
+  {
+    id: "18",
+    name: "Bread > Serangoon Garden Bakery & Confectionery",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3630965105793866,
+      lng: 103.86664656249444
+    },
+    rating: 5,
+    review: "classic old-school bakery bread from one of Serangoon's most legendary spots! 🍞✨ From the original ham & cheese to the all-time favorite hot dog buns, these nostalgic breads bring back memories of simpler times.",
+    image: "/images/serangoongardenbakeryconfectionery.jpg",
+    googlemaps: "https://maps.app.goo.gl/5ak9xuKVQB1tmsUeA"
+  },
+  {
+    id: "19",
+    name: "Char Kway Teow > No. 18 Zion Road Fried Kway Teow",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2926002438886703,
+      lng: 103.83126773336436
+    },
+    rating: 5,
+    review: "michelin-recommended stall in Zion Hawker Centre! Kway teow noodles are fried to order and topped with fish cake and cockles. The wok hei impresses with its robust flavours and a hint of spiciness, while the cockles impart extra umami. The wait can be long, but is well worth it.",
+    image: "/images/no18zionroadfriedkwayteow.jpg",
+    googlemaps: "https://maps.app.goo.gl/UQJHPLUgqqzTExHNA"
+  },
+  {
+    id: "20",
+    name: "Pork Bun > Gong Jing Li Qiang Guo Yu",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2821520407691205,
+      lng: 103.84195372944778
+    },
+    rating: 5,
+    review: "hidden away in the bustling streets of Chinatown, we've stumbled upon a true gem - 恭敬李炝锅鱼. While they're known for their sizzling braised fish, we're here for something even more special: their heavenly baozi (steamed pork buns) with over 30 years of history!",
+    image: "/images/gongjingliqiangguoyu.jpg",
+    googlemaps: "https://maps.app.goo.gl/umR7SBQAXmpQqdF37"
   },
 ];

@@ -305,7 +305,7 @@ return (
                                 <div className="p-6 md:w-2/3 flex items-center justify-center flex-col">
                                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 w-full">
                                         <h3 className="text-xl font-semibold text-gray-800">{place.name}</h3>
-                                        <span className="mt-4 mb-3 sm:mt-0 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full sm:inline-block text-center">
+                                        <span className="mt-4 mb-3 sm:mt-0 bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full sm:inline-block text-center">
                                             {place.minutesAway} mins away
                                         </span>
                                     </div>
