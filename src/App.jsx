@@ -264,14 +264,14 @@ return (
                                 style={{ zIndex: 1 }}
                             />
                             <img
-                                src="./images/zermattneo.jpg"
-                                alt="Owl Foodie"
+                                src="./images/mingchun.jpg"
+                                alt="Ming Chun"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 2 }}
                             />
                             <img
-                                src="./images/zermattneo.jpg"
-                                alt="About That Food"
+                                src="./images/hungrysam.jpg"
+                                alt="Hungry Sam"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 3 }}
                             />
@@ -296,7 +296,7 @@ return (
                                 </span>
                             </div>
                             <span className="text-xs text-gray-500 mt-1 text-center md:text-left">
-                                Zermatt Neo • Owl Foodie • About That Food
+                                Zermatt Neo 🇸🇬 • Ming Chun 🇲🇾 • Hungry Sam 🇲🇾
                             </span>
                         </div>
                     </div>
