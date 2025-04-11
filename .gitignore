@@ -61,3 +61,10 @@ Icon
 # Python bytecode
 __pycache__/
 *.py[cod]
+
+# Test reports
+*.test.html
+# Mobile test
+mobile_test.html
+# Schema test
+schema_test.html

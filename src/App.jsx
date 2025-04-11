@@ -387,7 +387,43 @@ return (
 
                 <div className="grid grid-cols-1 gap-6">
                     {sortedResults.map(place => (
-                        <div key={place.id} className="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover">
+                        <div key={place.id} className="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover restaurant-card">
+                            {/* Schema markup - invisible to users but visible to search engines */}
+                            <script type="application/ld+json">
+                              {JSON.stringify({
+                                "@context": "https://schema.org",
+                                "@type": "FoodEstablishment",
+                                "name": place.name,
+                                "image": place.image.startsWith('http') ? place.image : `https://imhungryaf.pages.dev${place.image}`,
+                                "address": {
+                                  "@type": "PostalAddress",
+                                  "addressCountry": place.coordinates.lat > 1.3 ? "SG" : "MY",
+                                  "addressRegion": place.coordinates.lat > 1.3 ? "Singapore" : "Kuala Lumpur"
+                                },
+                                "geo": {
+                                  "@type": "GeoCoordinates",
+                                  "latitude": place.coordinates.lat,
+                                  "longitude": place.coordinates.lng
+                                },
+                                "review": {
+                                  "@type": "Review",
+                                  "reviewRating": {
+                                    "@type": "Rating",
+                                    "ratingValue": place.rating.toString(),
+                                    "bestRating": "5"
+                                  },
+                                  "author": {
+                                    "@type": "Person",
+                                    "name": place.influencer,
+                                    "image": place.profilephoto ? 
+                                            `https://imhungryaf.pages.dev${place.profilephoto}` : 
+                                            undefined
+                                  },
+                                  "reviewBody": place.review.substring(0, 200) + (place.review.length > 200 ? "..." : "")
+                                },
+                                "sameAs": place.googlemaps
+                              })}
+                            </script>
                             <div className="md:flex">
                                 <div className="md:w-1/3 h-48 md:h-auto">
                                     <img src={place.image.startsWith('http') ? place.image : './' + place.image} alt={place.name} className="w-full h-full object-cover" />
@@ -479,7 +515,7 @@ return (
         )}
 
         <footer className="mt-16 text-center text-gray-500 text-sm">
-            <p>© 2025 imHungryAF. All food recommendations are reviewed by influencers, data manually curated and web app made by <a href="https://www.craftedbyhan.xyz/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">han</a> 😊</p>
+            <p> 2025 imHungryAF. All food recommendations are reviewed by influencers, data manually curated and web app made by <a href="https://www.craftedbyhan.xyz/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">han</a> .</p>
             <p className="mt-3">This application uses your current location to find nearby recommendations within a 60-minute drive based on typical urban traffic conditions. Your location data is not stored as it is unnecessary.</p>
             <br />
             <small>
