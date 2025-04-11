@@ -1,0 +1,84 @@
+# llms.txt for imHungryAF
+
+title: imHungryAF - Influencer Food Recommendations
+description: Discover the best eats recommended by your favorite influencers. Get personalized food recommendations from influencers within 60 minutes driving distance based on your current location. All recommendations are personally reviewed by food influencers and data is manually curated.
+
+privacy: This application uses your current location to find nearby recommendations within a 60-minute drive based on typical urban traffic conditions. Your location data is not stored as it is unnecessary.
+
+eta_method: This app estimates travel time without relying on external APIs or large country-specific datasets. It combines geodesic and grid-based distance formulas with heuristic adjustments for turns, time of day, curvature penalties, and dynamic speed modeling. The approach excludes detailed road hierarchy, traffic light delays, and day/night factors for simplicity. This lightweight method provides realistic ETAs while respecting user privacy and minimizing data usage.
+
+copyright: © 2025 imHungryAF. All food recommendations are reviewed by influencers, data manually curated and web app made by han (https://www.craftedbyhan.xyz/).
+
+food_places:
+- name: Mee Rebus > Yunos N Family
+  influencer: Zermatt Neo
+  location: 1.3718868833685227, 103.84642965767216
+  rating: 5
+  review: one of the best Mee Rebus in Singapore! This family-run stall has been around for decades using a 60 year-old family recipe, and their rich, flavourful gravy paired with yellow noodles is a favourite among locals.
+  googlemaps: https://maps.app.goo.gl/Ye7VQx7xXgrSCPkDA
+- name: Yong Tau Foo > Hup Chong Hakka
+  influencer: Zermatt Neo
+  location: 1.3386372430412696, 103.84435045559097
+  rating: 5
+  review: a well-known spot famous for their authentic Hakka-style yong tau foo that always has a long queue! Unlike the usual YTF you find at hawker centers, Hakka yong tau foo is stuffed generously with minced meat instead of fish paste, which gives it a more robust flavour.
+  googlemaps: https://maps.app.goo.gl/4qkjaRwe18Z5wT666
+- name: Prata Tsunami > R.K. Eating House
+  influencer: Zermatt Neo
+  location: 1.364526298993539, 103.86603582494463
+  rating: 5
+  review: opening hours 24/7, making them a go-to supper spot for Singaporeans to satisfy their late night roti prata cravings. This prata tsunami was flooded with 5 different gravy - hence it's name Tsunami. It's got curry and topped with tikka chicken, eggs and sambal.
+  googlemaps: https://maps.app.goo.gl/if89JR5Duz8fTfX2A
+- name: Curry Puff > J2 Famous Crispy Curry Puff
+  influencer: Zermatt Neo
+  location: 1.2793394685371828, 103.84658621536033
+  rating: 5
+  review: michelin-recommended, known for their crispy and flaky puffs with flavorful fillings inside. This stall is a favourite among locals and it's definitely rated as one of Singapore's top-rated curry puffs! Each puff is generously stuffed with filling and I tried all the four different flavours they offered, which includes their signature curry chicken, black pepper chicken, sardine and yam paste puff. All of them were freshly prepared and tasted so good!
+  googlemaps: https://maps.app.goo.gl/2WgdsJMkYEC8eh9g7
+- name: Fried Oxtail Rice > THREE. by Garamika
+  influencer: Zermatt Neo
+  location: 1.338832244321158, 103.84967107951154
+  rating: 5
+  review: run by three Indonesian-born, Gen Z sisters. Despite their young age, their restaurant has been receiving great reviews for its authentic and homely Indonesian cuisine, with dishes like ayam bakar, gado gado, and oxtail soup. Oxtail is deep-fried to perfection, giving it a crispy outer layer while remaining juicy and tender inside. If you love Indonesian food, this is a spot you don't want to miss!
+  googlemaps: https://maps.app.goo.gl/Wc7843A3zaAKuCrK6
+- name: Khao Soi > Kin Leaw Chill Thai Food
+  influencer: Zermatt Neo
+  location: 1.2797935601217907, 103.84379077938044
+  rating: 5
+  review: a rich and aromatic Northern Thai curry noodle dish, with crispy and soft egg noodles and a creamy coconut based broth. This place is known for serving one of the most authentic versions of Khao Soi in Singapore. If you're a fan of Thai food, Kin Leaw Chill Thai Food is a must-visit spot for their authentic thai flavours with an extensive menu of comforting dishes.
+  googlemaps: https://maps.app.goo.gl/6HrEmugsDksnYkGo8
+- name: Prawn Noodles > Lao Ban Niang
+  influencer: Zermatt Neo
+  location: 1.3227147420430763, 103.86686360955042
+  rating: 5
+  review: rich, umami-packed broth along with fresh, juicy prawns. Lao Ban Niang is a real hidden gem that not many people know about, but they definitely serve one of the better prawn noodles in Singapore, so if you're ever craving a solid bowl of prawn noodles, definitely check them out!
+  googlemaps: https://maps.app.goo.gl/VSutY1kyXGNxB5UL9
+- name: Hor Fun > Kok Sen Restaurant
+  influencer: Zermatt Neo
+  location: 1.279439202897575, 103.84161013342771
+  rating: 5
+  review: a family-run zi char spot that's not only loved by locals but also Michelin-recommended for their outstanding dishes. Known for their big prawns hor fun, this dish is a crowd favorite for its silky noodles, rich and savory gravy, and juicy prawns cooked to perfection. Kok Sen isn't just about hor fun, they're a must-visit for anyone looking to explore authentic Singapore zi char.
+  googlemaps: https://maps.app.goo.gl/24aAJprfpqjqo1at9
+- name: Korean Donkatsu > Myung Ga (명가) II
+  influencer: Zermatt Neo
+  location: 1.3385625538576134, 103.77861415337343
+  rating: 5
+  review: an authentic Korean donkatsu spot right here in Singapore! serving some of the best Korean-style donkatsu in town, Myung Ga II isn't just about portions, it's about quality, tradition, and a cozy dining experience that feels like a trip to Korea. Their crispy, golden-brown pork cutlets are fried to perfection and paired with their rich, savory sauce, every bite takes you straight to the heart of Korea.
+  googlemaps: https://maps.app.goo.gl/TvaYRM6sRyciWu5b7
+- name: Bread > Serangoon Garden Bakery & Confectionery
+  influencer: Zermatt Neo
+  location: 1.3630965105793866, 103.86664656249444
+  rating: 5
+  review: classic old-school bakery bread from one of Serangoon's most legendary spots! 🍞✨ From the original ham & cheese to the all-time favorite hot dog buns, these nostalgic breads bring back memories of simpler times.
+  googlemaps: https://maps.app.goo.gl/5ak9xuKVQB1tmsUeA
+- name: Char Kway Teow > No. 18 Zion Road Fried Kway Teow
+  influencer: Zermatt Neo
+  location: 1.2926002438886703, 103.83126773336436
+  rating: 5
+  review: michelin-recommended stall in Zion Hawker Centre! Kway teow noodles are fried to order and topped with fish cake and cockles. The wok hei impresses with its robust flavours and a hint of spiciness, while the cockles impart extra umami. The wait can be long, but is well worth it.
+  googlemaps: https://maps.app.goo.gl/UQJHPLUgqqzTExHNA
+- name: Pork Bun > Gong Jing Li Qiang Guo Yu
+  influencer: Zermatt Neo
+  location: 1.2821520407691205, 103.84195372944778
+  rating: 5
+  review: hidden away in the bustling streets of Chinatown, we've stumbled upon a true gem - 恭敬李炝锅鱼. While they're known for their sizzling braised fish, we're here for something even more special: their heavenly baozi (steamed pork buns) with over 30 years of history!
+  googlemaps: https://maps.app.goo.gl/umR7SBQAXmpQqdF37
