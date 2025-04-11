@@ -102,6 +102,20 @@ function App() {
   const [view, setView] = useState('home'); // home, loading, results, error, noresults
   const [results, setResults] = useState([]);
   const [sortOrder, setSortOrder] = useState('nearest');
+  const [showRegionBanner, setShowRegionBanner] = useState(() => {
+    // Only show on first visit per session
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("hideRegionBanner") !== "true";
+    }
+    return true;
+  });
+
+  const handleDismissRegionBanner = () => {
+    setShowRegionBanner(false);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("hideRegionBanner", "true");
+    }
+  };
 
   const requestLocation = () => {
     setView('loading');
@@ -189,6 +203,27 @@ function App() {
 
 return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+        {showRegionBanner && (
+          <div className="w-full bg-yellow-100 border-b border-yellow-300 text-yellow-900 px-4 py-2 flex items-center justify-center text-sm mb-4 rounded-t-lg shadow-sm">
+            <div className="flex flex-col items-center w-full text-center">
+              <span>
+                <strong>hey Hungry Friend !</strong>
+                <br />
+                imHungryAF is currently serving up recommendations only in <b>Singapore</b> and <b>Kuala Lumpur, Malaysia</b> for now.
+                <br />
+                more cities coming soon...
+              </span>
+            </div>
+            <button
+              className="ml-4 text-yellow-700 hover:text-yellow-900 font-bold text-lg self-start"
+              aria-label="Dismiss region notice"
+              onClick={handleDismissRegionBanner}
+              style={{ marginLeft: 'auto' }}
+            >
+              ×
+            </button>
+          </div>
+        )}
         <header className="text-center mb-8">
             <div className="flex justify-center items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center">
@@ -210,6 +245,61 @@ return (
                     <button onClick={requestLocation} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all">
                         <i className="fas fa-location-arrow mr-2"></i> Find Food Near Me
                     </button>
+                </div>
+            </div>
+        )}
+
+        {view === 'home' && (
+            <div className="text-center">
+                {/* Updated Featured Food Influencer Section */}
+                <div className="flex flex-col items-center justify-center my-6">
+                    {/* Parent div for images and text section */}
+                    <div className="flex flex-col md:flex-row items-center justify-center">
+                        {/* Image section */}
+                        <div className="flex -space-x-3 mb-2 md:mb-0 md:mr-6">
+                            <img
+                                src="./images/zermattneo.jpg"
+                                alt="Zermatt Neo"
+                                className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
+                                style={{ zIndex: 1 }}
+                            />
+                            <img
+                                src="./images/zermattneo.jpg"
+                                alt="Owl Foodie"
+                                className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
+                                style={{ zIndex: 2 }}
+                            />
+                            <img
+                                src="./images/zermattneo.jpg"
+                                alt="About That Food"
+                                className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
+                                style={{ zIndex: 3 }}
+                            />
+                        </div>
+
+                        {/* Text section */}
+                        <div className="flex flex-col items-center md:items-start">
+                            <div className="flex items-center space-x-2">
+                                <span className="font-semibold text-gray-800 text-sm md:text-base">
+                                    Featured Food Influencers
+                                </span>
+                                <span title="YouTube" className="text-red-500">
+                                    <svg
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        className="inline-block align-middle"
+                                    >
+                                        <path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.12C19.228 3.5 12 3.5 12 3.5s-7.228 0-9.386.566A2.994 2.994 0 0 0 .502 6.186C0 8.344 0 12 0 12s0 3.656.502 5.814a2.994 2.994 0 0 0 2.112 2.12C4.772 20.5 12 20.5 12 20.5s7.228 0 9.386-.566a2.994 2.994 0 0 0 2.112-2.12C24 15.656 24 12 24 12s0-3.656-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <span className="text-xs text-gray-500 mt-1 text-center md:text-left">
+                                Zermatt Neo • Owl Foodie • About That Food
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         )}
