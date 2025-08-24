@@ -258,19 +258,19 @@ return (
                         {/* Image section */}
                         <div className="flex -space-x-3 mb-2 md:mb-0 md:mr-6">
                             <img
-                                src="./images/zermattneo.jpg"
+                                src="/images/zermattneo.jpg"
                                 alt="Zermatt Neo"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 1 }}
                             />
                             <img
-                                src="./images/mingchun.jpg"
+                                src="/images/mingchun.jpg"
                                 alt="Ming Chun"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 2 }}
                             />
                             <img
-                                src="./images/hungrysam.jpg"
+                                src="/images/hungrysam.jpg"
                                 alt="Hungry Sam"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 3 }}
@@ -394,7 +394,7 @@ return (
                                 "@context": "https://schema.org",
                                 "@type": "FoodEstablishment",
                                 "name": place.name,
-                                "image": place.image.startsWith('http') ? place.image : `https://imhungryaf.pages.dev${place.image}`,
+                                "image": place.image,
                                 "address": {
                                   "@type": "PostalAddress",
                                   "addressCountry": place.coordinates.lat > 1.3 ? "SG" : "MY",
@@ -415,9 +415,7 @@ return (
                                   "author": {
                                     "@type": "Person",
                                     "name": place.influencer,
-                                    "image": place.profilephoto ? 
-                                            `https://imhungryaf.pages.dev${place.profilephoto}` : 
-                                            undefined
+                                    "image": place.profilephoto || undefined
                                   },
                                   "reviewBody": place.review.substring(0, 200) + (place.review.length > 200 ? "..." : "")
                                 },
@@ -426,7 +424,7 @@ return (
                             </script>
                             <div className="md:flex">
                                 <div className="md:w-1/3 h-48 md:h-auto">
-                                    <img src={place.image.startsWith('http') ? place.image : './' + place.image} alt={place.name} className="w-full h-full object-cover" />
+                                    <img src={place.image} alt={place.name} className="w-full h-full object-cover" />
                                 </div>
                                 <div className="p-6 md:w-2/3 flex items-center justify-center flex-col">
                                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 w-full">
@@ -437,7 +435,7 @@ return (
                                     </div>
                                     <div className="flex items-center mb-4 w-full">
                                         {place.profilephoto ? (
-                                            <img src={place.profilephoto.startsWith('http') ? place.profilephoto : './' + place.profilephoto} alt={place.influencer} className="w-10 h-10 rounded-full object-cover" />
+                                            <img src={place.profilephoto} alt={place.influencer} className="w-10 h-10 rounded-full object-cover" />
                                         ) : (
                                             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-orange-500 flex items-center justify-center text-white">
                                                 <i className="fas fa-user"></i>
