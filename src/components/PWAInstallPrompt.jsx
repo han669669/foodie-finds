@@ -109,19 +109,22 @@ export default function PWAInstallPrompt({ currentView }) {
   // Android post-install toast
   if (postInstall && isAndroidPlatform) {
     return (
-      <div className="fixed inset-x-0 bottom-3 px-4 z-50">
-        <div className="mx-auto max-w-md rounded-2xl border border-pink-200 bg-white/95 backdrop-blur shadow-lg">
-          <div className="flex items-start gap-3 px-4 py-3">
-            <div className="mt-0.5 h-8 w-8 rounded-full bg-gradient-to-r from-pink-500 to-orange-500 text-white flex items-center justify-center shadow">
-              <span className="text-sm font-bold">✓</span>
+      <div className="fixed inset-x-0 bottom-0 z-50 px-4 pb-[env(safe-area-inset-bottom)]" role="status" aria-live="polite">
+        <div className="mx-auto max-w-md rounded-xl bg-gray-900 text-white shadow-2xl ring-1 ring-black/10">
+          <div className="flex items-center gap-3 px-4 py-4">
+            <div className="h-10 w-10 shrink-0 rounded-full bg-green-500 text-white flex items-center justify-center shadow">
+              <span className="text-lg font-bold">✓</span>
             </div>
-            <div className="text-sm text-gray-800">
-              <p className="font-semibold">Installed!</p>
-              <p className="text-xs text-gray-700 mt-0.5">
-                Find 'imHungryAF' in your app drawer. To pin to Home, long-press the icon and drag it to your home screen.
-              </p>
+            <div className="flex-1">
+              <p className="text-base font-semibold leading-6">imHungryAF installed</p>
+              <p className="mt-0.5 text-sm leading-5 text-gray-200">Find it in your app drawer.</p>
             </div>
-            <button onClick={() => setPostInstall(false)} className="ml-auto text-xs text-gray-500 hover:text-gray-700">Got it</button>
+            <button
+              onClick={() => setPostInstall(false)}
+              className="ml-2 inline-flex items-center rounded-md bg-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-0"
+            >
+              Got it
+            </button>
           </div>
         </div>
       </div>
