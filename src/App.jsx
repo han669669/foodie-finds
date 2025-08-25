@@ -1,4 +1,7 @@
 import React, { useState, useMemo } from 'react';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
+import { foodPlaces } from './data';
+import ReloadPrompt from './components/ReloadPrompt';
 
 // --- Enhanced Travel Time Estimation Constants ---
 
@@ -34,7 +37,6 @@ const ROUTE_COMPLEXITY_PENALTY = 1.1; // 10% increase if complex
 // Helper: degrees to km (approximate, Singapore latitude)
 const KM_PER_DEG_LAT = 111.32;
 const KM_PER_DEG_LON = 111.32 * Math.cos(1.3 * Math.PI / 180); // ~cos(latitude in radians)
-import { foodPlaces } from './data';
 
 function vincentyDistance(lat1, lon1, lat2, lon2) {
   const a = 6378137;
@@ -691,6 +693,12 @@ function App() {
                 </button>
             </div>
         )}
+
+        {/* PWA update/offline toasts */}
+        <ReloadPrompt />
+
+        {/* PWA Install Prompt (Android/iOS tailored) */}
+        <PWAInstallPrompt currentView={view} />
 
         <footer className="mt-16 text-center text-gray-500 text-sm">
             <p> 2025 imHungryAF. All food recommendations are reviewed by influencers, data manually curated and web app made by <a href="https://www.craftedbyhan.xyz/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">han</a> .</p>
