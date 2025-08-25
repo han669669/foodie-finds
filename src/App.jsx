@@ -110,6 +110,12 @@ function App() {
     return true;
   });
 
+  // Track the kind of geolocation error to render better UX copy
+  // Possible values: 'denied' | 'timeout' | 'unavailable' | 'unknown' | null
+  const [errorKind, setErrorKind] = useState(null);
+  // Show a small hint when watch fallback is active
+  const [watching, setWatching] = useState(false);
+
   const handleDismissRegionBanner = () => {
     setShowRegionBanner(false);
     if (typeof window !== "undefined") {
@@ -119,83 +125,156 @@ function App() {
 
   const requestLocation = () => {
     setView('loading');
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const userLoc = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        };
-        if (import.meta.env.DEV) {
-          console.log('Detected user location:', userLoc.lat, userLoc.lng);
-        }
-        const nearby = foodPlaces.map(place => {
-          const vincentyDist = vincentyDistance(
-            userLoc.lat, userLoc.lng,
-            place.coordinates.lat, place.coordinates.lng
-          );
+    setErrorKind(null);
+    setWatching(false);
 
-          // Manhattan distance approximation
-          const dLat = Math.abs(userLoc.lat - place.coordinates.lat) * KM_PER_DEG_LAT;
-          const dLon = Math.abs(userLoc.lng - place.coordinates.lng) * KM_PER_DEG_LON;
-          const manhattanDist = dLat + dLon;
+    const onSuccess = (pos) => {
+      const userLoc = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      };
+      if (import.meta.env.DEV) {
+        console.log('Detected user location:', userLoc.lat, userLoc.lng);
+      }
+      const nearby = foodPlaces.map(place => {
+        const vincentyDist = vincentyDistance(
+          userLoc.lat, userLoc.lng,
+          place.coordinates.lat, place.coordinates.lng
+        );
 
-          // Blend vincenty and Manhattan
-          let blendedDist = BLEND_RATIO * vincentyDist + (1 - BLEND_RATIO) * manhattanDist;
+        // Manhattan distance approximation
+        const dLat = Math.abs(userLoc.lat - place.coordinates.lat) * KM_PER_DEG_LAT;
+        const dLon = Math.abs(userLoc.lng - place.coordinates.lng) * KM_PER_DEG_LON;
+        const manhattanDist = dLat + dLon;
 
-          // Apply curvature penalty
-          blendedDist *= CURVATURE_FACTOR;
+        // Blend vincenty and Manhattan
+        let blendedDist = BLEND_RATIO * vincentyDist + (1 - BLEND_RATIO) * manhattanDist;
 
-          // --- Dynamic speed calculation ---
-          let avgSpeed = BASE_SPEED + (MAX_SPEED - BASE_SPEED) * (1 - Math.exp(-SPEED_K * blendedDist));
+        // Apply curvature penalty
+        blendedDist *= CURVATURE_FACTOR;
 
-          // --- Turn penalty estimation ---
-          const estimatedTurns = Math.max(1, Math.round((dLat + dLon) / 0.5)); // assume 1 turn per 0.5 km of grid distance
-          const turnDelayMinutes = (TURN_TIME_SEC * estimatedTurns) / 60;
+        // --- Dynamic speed calculation ---
+        let avgSpeed = BASE_SPEED + (MAX_SPEED - BASE_SPEED) * (1 - Math.exp(-SPEED_K * blendedDist));
 
-          // --- Time of day adjustment ---
-          const now = new Date();
-          const hour = now.getHours();
-          const isWeekend = now.getDay() === 0 || now.getDay() === 6;
-          const isPeak = (hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19);
+        // --- Turn penalty estimation ---
+        const estimatedTurns = Math.max(1, Math.round((dLat + dLon) / 0.5)); // assume 1 turn per 0.5 km of grid distance
+        const turnDelayMinutes = (TURN_TIME_SEC * estimatedTurns) / 60;
 
-          let timeKey = '';
-          if (isWeekend) {
-            timeKey = isPeak ? 'weekend_peak' : 'weekend_offpeak';
-          } else {
-            timeKey = isPeak ? 'weekday_peak' : 'weekday_offpeak';
-          }
-          const timeFactor = TIME_FACTORS[timeKey];
+        // --- Time of day adjustment ---
+        const now = new Date();
+        const hour = now.getHours();
+        const isWeekend = now.getDay() === 0 || now.getDay() === 6;
+        const isPeak = (hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19);
 
-          // --- Route complexity penalty ---
-          // Placeholder: assume all routes cross a river (for demo)
-          const complexityFactor = ROUTE_COMPLEXITY_PENALTY;
-
-          // --- Final ETA ---
-          const adjustedDistance = blendedDist * timeFactor * complexityFactor;
-          let etaMinutes = (adjustedDistance / avgSpeed) * 60;
-
-          // Add turn delay only
-          etaMinutes += turnDelayMinutes;
-
-          return {
-            ...place,
-            distanceKm: adjustedDistance,
-            minutesAway: Math.round(etaMinutes)
-          };
-        }).filter(p => p.minutesAway <= 60);
-
-        if (nearby.length > 0) {
-          setResults(nearby);
-          setView('results');
+        let timeKey = '';
+        if (isWeekend) {
+          timeKey = isPeak ? 'weekend_peak' : 'weekend_offpeak';
         } else {
-          setView('noresults');
+          timeKey = isPeak ? 'weekday_peak' : 'weekday_offpeak';
         }
+        const timeFactor = TIME_FACTORS[timeKey];
+
+        // --- Route complexity penalty ---
+        // Placeholder: assume all routes cross a river (for demo)
+        const complexityFactor = ROUTE_COMPLEXITY_PENALTY;
+
+        // --- Final ETA ---
+        const adjustedDistance = blendedDist * timeFactor * complexityFactor;
+        let etaMinutes = (adjustedDistance / avgSpeed) * 60;
+
+        // Add turn delay only
+        etaMinutes += turnDelayMinutes;
+
+        return {
+          ...place,
+          distanceKm: adjustedDistance,
+          minutesAway: Math.round(etaMinutes)
+        };
+      }).filter(p => p.minutesAway <= 60);
+
+      if (nearby.length > 0) {
+        setResults(nearby);
+        setView('results');
+      } else {
+        setView('noresults');
+      }
+    };
+
+    const fastOptions = { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 };
+    const retryOptions = { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 };
+
+    navigator.geolocation.getCurrentPosition(
+      onSuccess,
+      (err) => {
+        if (import.meta.env.DEV) {
+          console.warn('Geolocation (fast) failed:', err?.code, err?.message);
+        }
+        // Permission denied: show permission guidance
+        if (err && err.code === 1) {
+          setErrorKind('denied');
+          setView('error');
+          return;
+        }
+
+        // Retry with high accuracy and longer timeout
+        navigator.geolocation.getCurrentPosition(
+          onSuccess,
+          (err2) => {
+            if (import.meta.env.DEV) {
+              console.warn('Geolocation (retry) failed:', err2?.code, err2?.message);
+            }
+            // Final fallback: start a one-time watch to catch the first GPS fix, then clear it
+            let resolved = false;
+            let watchTimer;
+            const watchOptions = { enableHighAccuracy: true, maximumAge: 0 };
+            setWatching(true);
+            const watchId = navigator.geolocation.watchPosition(
+              (pos) => {
+                if (resolved) return;
+                resolved = true;
+                navigator.geolocation.clearWatch(watchId);
+                if (watchTimer) clearTimeout(watchTimer);
+                setWatching(false);
+                if (import.meta.env.DEV) {
+                  console.log('Geolocation (watch) success');
+                }
+                onSuccess(pos);
+              },
+              (err3) => {
+                if (import.meta.env.DEV) {
+                  console.warn('Geolocation (watch) error:', err3?.code, err3?.message);
+                }
+                // If user denies permission during watch, stop immediately and surface proper message
+                if (!resolved && err3 && err3.code === 1) {
+                  resolved = true;
+                  navigator.geolocation.clearWatch(watchId);
+                  if (watchTimer) clearTimeout(watchTimer);
+                  setWatching(false);
+                  setErrorKind('denied');
+                  setView('error');
+                }
+              },
+              watchOptions
+            );
+            watchTimer = setTimeout(() => {
+              if (resolved) return;
+              resolved = true;
+              navigator.geolocation.clearWatch(watchId);
+              setWatching(false);
+              if (err2) {
+                if (err2.code === 2) setErrorKind('unavailable');
+                else if (err2.code === 3) setErrorKind('timeout');
+                else setErrorKind('unknown');
+              } else {
+                setErrorKind('timeout');
+              }
+              setView('error');
+            }, 45000);
+          },
+          retryOptions
+        );
       },
-      err => {
-        console.error(err);
-        setView('error');
-      },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+      fastOptions
     );
   };
 
@@ -358,6 +437,12 @@ function App() {
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">Finding the best eats near you</h2>
                 <p className="text-gray-600">We're searching imHungryAF's recommendations in your area...</p>
+                {watching && (
+                  <p className="text-xs text-gray-500 mt-2 icon-text">
+                    <span className="w-2 h-2 rounded-full bg-blue-400 location-pulse"></span>
+                    Trying to get a GPS fix…
+                  </p>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                     {[1,2].map(i => (
                         <div key={i} className="bg-white rounded-xl shadow-sm p-6">
@@ -506,13 +591,33 @@ function App() {
         {view === 'error' && (
             <div className="bg-white rounded-xl shadow-md p-8 max-w-md mx-auto text-center">
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fa-solid fa-exclamation-triangle text-red-500 text-2xl"></i>
+                    <i className="fa-solid fa-triangle-exclamation text-red-500 text-2xl"></i>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Location Access Required</h3>
-                <p className="text-gray-600 mb-6">We couldn't access your location. Please enable location services in your browser settings and manually refresh the page to allow the location permission prompt to appear again.</p>
-                <button onClick={() => window.location.reload()} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
-                <i className="fa-solid fa-sync-alt"></i> Refresh Page
-                </button>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {errorKind === 'denied' ? 'Location Access Required' : "Couldn't get your location"}
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  {errorKind === 'denied' && (
+                    <>We don't have permission to use your location. Enable it for your browser in iOS Settings, then return and try again.</>
+                  )}
+                  {errorKind === 'timeout' && (
+                    <>It took too long to get a GPS fix. Please try again in an open area or check your connection.</>
+                  )}
+                  {errorKind === 'unavailable' && (
+                    <>Location is temporarily unavailable. Move to an open area or try again shortly.</>
+                  )}
+                  {(!errorKind || errorKind === 'unknown') && (
+                    <>We couldn't access your location. Please try again.</>
+                  )}
+                </p>
+                <div className="flex items-center justify-center gap-3">
+                  <button onClick={requestLocation} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
+                    <i className="fa-solid fa-location-arrow"></i> Try Again
+                  </button>
+                  <button onClick={() => window.location.reload()} className="icon-text bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-all">
+                    <i className="fa-solid fa-arrows-rotate"></i> Refresh Page
+                  </button>
+                </div>
             </div>
         )}
 
