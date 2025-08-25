@@ -633,7 +633,7 @@ function App() {
                 </h3>
                 <p className="text-gray-600 mb-6">
                   {errorKind === 'denied' && (
-                    <>We don't have permission to use your location. Enable it for your browser in iOS Settings, then return and try again.</>
+                    <>We don't have permission to use your location. Enable it for your browser in Settings, then return and try again.</>
                   )}
                   {errorKind === 'timeout' && (
                     <>It took too long to get a GPS fix. Please try again in an open area or check your connection.</>
@@ -646,9 +646,21 @@ function App() {
                   )}
                 </p>
                 {errorKind === 'denied' && isIOS() && (
-                  <p className="text-xs text-gray-500 -mt-4 mb-6">
-                    iOS hint: After changing Location permissions in Settings, close this tab and reopen the site for changes to take effect.
-                  </p>
+                  <div className="text-xs text-gray-700 bg-gray-50 border border-gray-200 rounded-lg p-3 text-left -mt-4 mb-6">
+                    <p className="icon-text font-medium text-gray-800 mb-2">
+                      <i className="fa-solid fa-mobile-screen-button"></i>
+                      iOS: enable Safari location prompts again
+                    </p>
+                    <ol className="list-decimal list-inside space-y-1">
+                      <li>Open <span className="font-medium">Settings</span></li>
+                      <li>Tap <span className="font-medium">Privacy & Security</span></li>
+                      <li>Tap <span className="font-medium">Location Services</span></li>
+                      <li>Tap <span className="font-medium">Safari Websites</span></li>
+                      <li>Select <span className="font-medium">Ask Next Time Or When I Share</span> or <span className="font-medium">While Using the App</span></li>
+                      <li>Return here and tap <span className="font-medium">Try Again</span></li>
+                    </ol>
+                    <p className="text-[11px] text-gray-500 mt-2">If it still doesn't prompt, close this tab and reopen the site.</p>
+                  </div>
                 )}
                 {import.meta.env.DEV && (lastError || permissionState) && (
                   <p className="text-[11px] text-gray-400 font-mono mt-1 mb-3">
