@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 // --- Enhanced Travel Time Estimation Constants ---
 
@@ -125,7 +125,9 @@ function App() {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         };
-        console.log('Detected user location:', userLoc.lat, userLoc.lng);
+        if (import.meta.env.DEV) {
+          console.log('Detected user location:', userLoc.lat, userLoc.lng);
+        }
         const nearby = foodPlaces.map(place => {
           const vincentyDist = vincentyDistance(
             userLoc.lat, userLoc.lng,
@@ -192,16 +194,19 @@ function App() {
       err => {
         console.error(err);
         setView('error');
-      }
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
     );
   };
 
-  const sortedResults = [...results].sort((a, b) => {
-    if (sortOrder === 'nearest') return a.minutesAway - b.minutesAway;
-    else return b.minutesAway - a.minutesAway;
-  });
+  const sortedResults = useMemo(() => {
+    return [...results].sort((a, b) => {
+      if (sortOrder === 'nearest') return a.minutesAway - b.minutesAway;
+      else return b.minutesAway - a.minutesAway;
+    });
+  }, [results, sortOrder]);
 
-return (
+  return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
         {showRegionBanner && (
           <div className="w-full bg-yellow-100 border-b border-yellow-300 text-yellow-900 px-4 py-2 flex items-center justify-center text-sm mb-4 rounded-t-lg shadow-sm">
@@ -227,7 +232,7 @@ return (
         <header className="text-center mb-8">
             <div className="flex justify-center items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center">
-                    <i className="fas fa-utensils text-white text-2xl"></i>
+                    <i className="fa-solid fa-utensils text-white text-2xl"></i>
                 </div>
                 <h1 className="text-4xl font-bold text-gray-800 cursor-pointer" onClick={() => setView('home')}>imHungryAF</h1>
             </div>
@@ -238,12 +243,12 @@ return (
             <div className="text-center">
                 <div className="bg-white rounded-xl shadow-md p-10 mb-8 max-w-md mx-auto">
                     <div className="w-24 h-24 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i className="fas fa-utensils text-white text-4xl"></i>
+                        <i className="fa-solid fa-utensils text-white text-4xl"></i>
                     </div>
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">Find Nearby Eats</h2>
                     <p className="text-gray-600 mb-6">Get personalized food recommendations from influencers within 60 minutes driving distance based on your current location.</p>
-                    <button onClick={requestLocation} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all">
-                        <i className="fas fa-location-arrow mr-2"></i> Find Food Near Me
+                    <button onClick={requestLocation} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all">
+                        <i className="fa-solid fa-location-arrow"></i> Find Food Near Me
                     </button>
                 </div>
             </div>
@@ -262,18 +267,30 @@ return (
                                 alt="Zermatt Neo"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 1 }}
+                                loading="lazy"
+                                decoding="async"
+                                width="48"
+                                height="48"
                             />
                             <img
                                 src="/images/mingchun.jpg"
                                 alt="Ming Chun"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 2 }}
+                                loading="lazy"
+                                decoding="async"
+                                width="48"
+                                height="48"
                             />
                             <img
                                 src="/images/hungrysam.jpg"
                                 alt="Hungry Sam"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 3 }}
+                                loading="lazy"
+                                decoding="async"
+                                width="48"
+                                height="48"
                             />
                         </div>
 
@@ -310,23 +327,23 @@ return (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
               <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
                 <div className="text-pink-500 mb-2">
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
                 </div>
                 <p className="text-gray-700">"imHungryAF's recommendations never disappoint!"</p>
               </div>
               <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
                 <div className="text-pink-500 mb-2">
-                  <i className="fas fa-route"></i>
+                  <i className="fa-solid fa-route"></i>
                 </div>
                 <p className="text-gray-700">All recommendations within 60 minutes driving distance from you</p>
               </div>
               <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
                 <div className="text-pink-500 mb-2">
-                  <i className="fas fa-user-check"></i>
+                  <i className="fa-solid fa-user-check"></i>
                 </div>
                 <p className="text-gray-700">Only places personally reviewed by food influencers</p>
               </div>
@@ -337,7 +354,7 @@ return (
         {view === 'loading' && (
             <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fas fa-spinner text-blue-500 text-2xl animate-spin"></i>
+                    <i className="fa-solid fa-spinner text-blue-500 text-2xl animate-spin"></i>
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">Finding the best eats near you</h2>
                 <p className="text-gray-600">We're searching imHungryAF's recommendations in your area...</p>
@@ -364,7 +381,7 @@ return (
             <>
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-7">
                     <h2 className="text-xl md:text-3xl font-semibold text-gray-900 mb-4 md:mb-0 flex items-center gap-2">
-                        <i className="fas fa-map-marker-alt text-blue-500"></i>
+                        <i className="fa-solid fa-location-dot text-blue-500"></i>
                         <span>Nearby Recommendations</span>
                     </h2>
                     <div className="flex items-center">
@@ -379,7 +396,7 @@ return (
                                 <option value="furthest">Distance (furthest first)</option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <i className="fas fa-chevron-down text-xs"></i>
+                                <i className="fa-solid fa-chevron-down text-xs"></i>
                             </div>
                         </div>
                     </div>
@@ -424,7 +441,7 @@ return (
                             </script>
                             <div className="md:flex">
                                 <div className="md:w-1/3 h-48 md:h-auto">
-                                    <img src={place.image} alt={place.name} className="w-full h-full object-cover" />
+                                    <img src={place.image} alt={place.name} className="w-full h-full object-cover" loading="lazy" decoding="async" width="640" height="480" />
                                 </div>
                                 <div className="p-6 md:w-2/3 flex items-center justify-center flex-col">
                                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 w-full">
@@ -435,24 +452,24 @@ return (
                                     </div>
                                     <div className="flex items-center mb-4 w-full">
                                         {place.profilephoto ? (
-                                            <img src={place.profilephoto} alt={place.influencer} className="w-10 h-10 rounded-full object-cover" />
+                                            <img src={place.profilephoto} alt={place.influencer} className="w-10 h-10 rounded-full object-cover" loading="lazy" decoding="async" width="40" height="40" />
                                         ) : (
                                             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-orange-500 flex items-center justify-center text-white">
-                                                <i className="fas fa-user"></i>
+                                                <i className="fa-solid fa-user"></i>
                                             </div>
                                         )}
                                         <div className="ml-3">
                                             <div className="flex items-center gap-1">
                                                 <p className="text-sm font-medium text-gray-800">{place.influencer}</p>
-                                                <i className="fas fa-check-circle text-blue-500 text-xs"></i>
+                                                <i className="fa-solid fa-check-circle text-blue-500 text-xs"></i>
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <div className="flex">
                                                     {Array(place.rating).fill(0).map((_,i) => (
-                                                        <i key={i} className="fas fa-star text-yellow-400 text-xs"></i>
+                                                        <i key={i} className="fa-solid fa-star text-yellow-400 text-xs"></i>
                                                     ))}
                                                     {Array(5 - place.rating).fill(0).map((_,i) => (
-                                                        <i key={i} className="far fa-star text-yellow-400 text-xs"></i>
+                                                        <i key={i} className="fa-regular fa-star text-yellow-400 text-xs"></i>
                                                     ))}
                                                 </div>
                                                 <span className="text-xs text-gray-500 ml-1">{place.rating}.0</span>
@@ -461,12 +478,12 @@ return (
                                     </div>
                                     <p className="text-gray-600 text-sm mb-4 text-center">"{place.review}"</p>
                                     <div className="flex justify-between items-center w-full">
-                                        <span className="text-xs text-gray-500">
-                                            <i className="fas fa-map-marker-alt mr-1"></i> {place.distanceKm.toFixed(2)} km
+                                        <span className="icon-text text-xs text-gray-500">
+                                            <i className="fa-solid fa-location-dot"></i> {place.distanceKm.toFixed(2)} km
                                         </span>
                                         {place.googlemaps ? (
-                                            <a href={place.googlemaps} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-500 hover:text-blue-600 transition-all">
-                                                <i className="fas fa-map-marked-alt mr-1"></i> View on Maps
+                                            <a href={place.googlemaps} target="_blank" rel="noopener noreferrer" className="icon-text text-sm font-medium text-blue-500 hover:text-blue-600 transition-all">
+                                                <i className="fa-solid fa-map-location-dot"></i> View on Maps
                                             </a>
                                         ) : (
                                             <span className="text-sm text-gray-400">No map available</span>
@@ -479,8 +496,8 @@ return (
                 </div>
 
                 <div className="mt-8 text-center">
-                    <button onClick={() => setView('home')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-all">
-                        <i className="fas fa-arrow-left mr-2"></i> Back to Home
+                    <button onClick={() => setView('home')} className="icon-text bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-all">
+                        <i className="fa-solid fa-arrow-left"></i> Back to Home
                     </button>
                 </div>
             </>
@@ -489,12 +506,12 @@ return (
         {view === 'error' && (
             <div className="bg-white rounded-xl shadow-md p-8 max-w-md mx-auto text-center">
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                    <i className="fa-solid fa-exclamation-triangle text-red-500 text-2xl"></i>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">Location Access Required</h3>
                 <p className="text-gray-600 mb-6">We couldn't access your location. Please enable location services in your browser settings and manually refresh the page to allow the location permission prompt to appear again.</p>
-                <button onClick={() => window.location.reload()} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
-                <i className="fas fa-sync-alt mr-2"></i> Refresh Page
+                <button onClick={() => window.location.reload()} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
+                <i className="fa-solid fa-sync-alt"></i> Refresh Page
                 </button>
             </div>
         )}
@@ -502,12 +519,12 @@ return (
         {view === 'noresults' && (
             <div className="bg-white rounded-xl shadow-md p-8 max-w-md mx-auto text-center">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fas fa-search text-yellow-500 text-2xl"></i>
+                    <i className="fa-solid fa-search text-yellow-500 text-2xl"></i>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">No Nearby Spots Found</h3>
                 <p className="text-gray-600 mb-6">We couldn't find any imHungryAF recommended places within 60 minutes of your location. Check back later as we add more recommendations!</p>
-                <button onClick={() => setView('home')} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
-                    <i className="fas fa-home mr-2"></i> Back to Home
+                <button onClick={() => setView('home')} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
+                    <i className="fa-solid fa-home"></i> Back to Home
                 </button>
             </div>
         )}

@@ -68,3 +68,6 @@ __pycache__/
 mobile_test.html
 # Schema test
 schema_test.html
+
+# Before FontAwesome v6 to v7 migration
+beforefontawesomev6tov7migration.png
