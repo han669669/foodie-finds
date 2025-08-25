@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 // --- Enhanced Travel Time Estimation Constants ---
 
@@ -201,7 +201,7 @@ function App() {
     };
 
     const fastOptions = { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 };
-    const retryOptions = { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 };
+    const retryOptions = { enableHighAccuracy: false, timeout: 30000, maximumAge: 0 };
 
     navigator.geolocation.getCurrentPosition(
       onSuccess,
@@ -216,7 +216,7 @@ function App() {
           return;
         }
 
-        // Retry with high accuracy and longer timeout
+        // Retry with a longer timeout
         navigator.geolocation.getCurrentPosition(
           onSuccess,
           (err2) => {
@@ -226,7 +226,7 @@ function App() {
             // Final fallback: start a one-time watch to catch the first GPS fix, then clear it
             let resolved = false;
             let watchTimer;
-            const watchOptions = { enableHighAccuracy: true, maximumAge: 0 };
+            const watchOptions = { enableHighAccuracy: false, maximumAge: 0 };
             setWatching(true);
             const watchId = navigator.geolocation.watchPosition(
               (pos) => {
@@ -278,12 +278,10 @@ function App() {
     );
   };
 
-  const sortedResults = useMemo(() => {
-    return [...results].sort((a, b) => {
-      if (sortOrder === 'nearest') return a.minutesAway - b.minutesAway;
-      else return b.minutesAway - a.minutesAway;
-    });
-  }, [results, sortOrder]);
+  const sortedResults = [...results].sort((a, b) => {
+    if (sortOrder === 'nearest') return a.minutesAway - b.minutesAway;
+    else return b.minutesAway - a.minutesAway;
+  });
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
