@@ -12,17 +12,17 @@ export default function PWAInstallPrompt({ currentView }) {
   const { canInstall, promptInstall, dismissPrompt, installed, isIOS } = useA2HS()
   const [visible, setVisible] = useState(false)
 
-  // Timing/engagement heuristics: show on results view or after 45s engaged time
+  // Show immediately on the results view (no 45s delay)
   useEffect(() => {
-    if (installed) return setVisible(false)
-    if (currentView === 'results' && (canInstall || isIOS)) {
-      setVisible(true)
+    if (installed) {
+      setVisible(false)
       return
     }
-    const t = setTimeout(() => {
-      if (canInstall || isIOS) setVisible(true)
-    }, 45000)
-    return () => clearTimeout(t)
+    if (currentView === 'results' && (canInstall || isIOS)) {
+      setVisible(true)
+    } else {
+      setVisible(false)
+    }
   }, [currentView, canInstall, installed, isIOS])
 
   if (!visible) return null
