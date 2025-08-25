@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 // --- Enhanced Travel Time Estimation Constants ---
 
@@ -115,6 +115,32 @@ function App() {
   const [errorKind, setErrorKind] = useState(null);
   // Show a small hint when watch fallback is active
   const [watching, setWatching] = useState(false);
+  // Capture last geolocation error for debug
+  const [lastError, setLastError] = useState(null); // { code, message } | null
+  // Track Permissions API state if available
+  const [permissionState, setPermissionState] = useState(null); // 'granted' | 'denied' | 'prompt' | 'unsupported' | null
+
+  const probePermission = () => {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.permissions && navigator.permissions.query) {
+        navigator.permissions.query({ name: 'geolocation' }).then((status) => {
+          setPermissionState(status.state);
+        }).catch(() => setPermissionState('unsupported'));
+      } else {
+        setPermissionState('unsupported');
+      }
+    } catch (_) {
+      setPermissionState('unsupported');
+    }
+  };
+
+  const isIOS = () => {
+    if (typeof navigator === 'undefined') return false;
+    const ua = navigator.userAgent || '';
+    const platform = navigator.platform || '';
+    // iPhone/iPad/iPod or iPadOS Safari (Mac platform + Mobile UA)
+    return /iP(hone|od|ad)/.test(platform) || (/Mac/.test(platform) && /Mobile/.test(ua));
+  };
 
   const handleDismissRegionBanner = () => {
     setShowRegionBanner(false);
@@ -127,6 +153,8 @@ function App() {
     setView('loading');
     setErrorKind(null);
     setWatching(false);
+    setLastError(null);
+    setPermissionState(null);
 
     const onSuccess = (pos) => {
       const userLoc = {
@@ -201,7 +229,7 @@ function App() {
     };
 
     const fastOptions = { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 };
-    const retryOptions = { enableHighAccuracy: false, timeout: 30000, maximumAge: 0 };
+    const retryOptions = { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 };
 
     navigator.geolocation.getCurrentPosition(
       onSuccess,
@@ -211,12 +239,14 @@ function App() {
         }
         // Permission denied: show permission guidance
         if (err && err.code === 1) {
+          setLastError({ code: err.code, message: err.message });
           setErrorKind('denied');
+          probePermission();
           setView('error');
           return;
         }
 
-        // Retry with a longer timeout
+        // Retry with high accuracy and longer timeout
         navigator.geolocation.getCurrentPosition(
           onSuccess,
           (err2) => {
@@ -226,7 +256,7 @@ function App() {
             // Final fallback: start a one-time watch to catch the first GPS fix, then clear it
             let resolved = false;
             let watchTimer;
-            const watchOptions = { enableHighAccuracy: false, maximumAge: 0 };
+            const watchOptions = { enableHighAccuracy: true, maximumAge: 0 };
             setWatching(true);
             const watchId = navigator.geolocation.watchPosition(
               (pos) => {
@@ -250,7 +280,9 @@ function App() {
                   navigator.geolocation.clearWatch(watchId);
                   if (watchTimer) clearTimeout(watchTimer);
                   setWatching(false);
+                  setLastError({ code: err3.code, message: err3.message });
                   setErrorKind('denied');
+                  probePermission();
                   setView('error');
                 }
               },
@@ -262,12 +294,15 @@ function App() {
               navigator.geolocation.clearWatch(watchId);
               setWatching(false);
               if (err2) {
+                setLastError({ code: err2.code, message: err2.message });
                 if (err2.code === 2) setErrorKind('unavailable');
                 else if (err2.code === 3) setErrorKind('timeout');
                 else setErrorKind('unknown');
               } else {
+                setLastError({ code: 3, message: 'Timeout' });
                 setErrorKind('timeout');
               }
+              probePermission();
               setView('error');
             }, 45000);
           },
@@ -278,10 +313,12 @@ function App() {
     );
   };
 
-  const sortedResults = [...results].sort((a, b) => {
-    if (sortOrder === 'nearest') return a.minutesAway - b.minutesAway;
-    else return b.minutesAway - a.minutesAway;
-  });
+  const sortedResults = useMemo(() => {
+    return [...results].sort((a, b) => {
+      if (sortOrder === 'nearest') return a.minutesAway - b.minutesAway;
+      else return b.minutesAway - a.minutesAway;
+    });
+  }, [results, sortOrder]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -608,6 +645,17 @@ function App() {
                     <>We couldn't access your location. Please try again.</>
                   )}
                 </p>
+                {errorKind === 'denied' && isIOS() && (
+                  <p className="text-xs text-gray-500 -mt-4 mb-6">
+                    iOS hint: After changing Location permissions in Settings, close this tab and reopen the site for changes to take effect.
+                  </p>
+                )}
+                {import.meta.env.DEV && (lastError || permissionState) && (
+                  <p className="text-[11px] text-gray-400 font-mono mt-1 mb-3">
+                    {lastError ? `err ${lastError.code}: ${lastError.message}` : ''}
+                    {permissionState ? `${lastError ? ' | ' : ''}perm: ${permissionState}` : ''}
+                  </p>
+                )}
                 <div className="flex items-center justify-center gap-3">
                   <button onClick={requestLocation} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
                     <i className="fa-solid fa-location-arrow"></i> Try Again
