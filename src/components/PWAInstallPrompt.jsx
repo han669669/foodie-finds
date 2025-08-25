@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import useA2HS from '../hooks/useA2HS'
 
 function platform() {
@@ -11,6 +11,9 @@ function platform() {
 export default function PWAInstallPrompt({ currentView }) {
   const { canInstall, promptInstall, dismissPrompt, installed, isIOS } = useA2HS()
   const [visible, setVisible] = useState(false)
+  const [postInstall, setPostInstall] = useState(false)
+  const isAndroidPlatform = useMemo(() => platform() === 'android', [])
+  const prevInstalled = useRef(installed)
 
   // Show immediately on the results view (no 45s delay)
   useEffect(() => {
@@ -25,7 +28,17 @@ export default function PWAInstallPrompt({ currentView }) {
     }
   }, [currentView, canInstall, installed, isIOS])
 
-  if (!visible) return null
+  // Android: show a one-time toast right after installation completes
+  useEffect(() => {
+    if (!prevInstalled.current && installed && isAndroidPlatform) {
+      setPostInstall(true)
+      const t = setTimeout(() => setPostInstall(false), 10000)
+      return () => clearTimeout(t)
+    }
+    prevInstalled.current = installed
+  }, [installed, isAndroidPlatform])
+
+  if (!visible && !postInstall) return null
 
   const onInstall = async () => {
     const choice = await promptInstall()
@@ -87,6 +100,28 @@ export default function PWAInstallPrompt({ currentView }) {
             <button onClick={onInstall} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white text-sm font-medium py-2 px-4 rounded-lg shadow-md transition-all">
               <i className="fa-solid fa-plus"></i> Add to home screen
             </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Android post-install toast
+  if (postInstall && isAndroidPlatform) {
+    return (
+      <div className="fixed inset-x-0 bottom-3 px-4 z-50">
+        <div className="mx-auto max-w-md rounded-2xl border border-pink-200 bg-white/95 backdrop-blur shadow-lg">
+          <div className="flex items-start gap-3 px-4 py-3">
+            <div className="mt-0.5 h-8 w-8 rounded-full bg-gradient-to-r from-pink-500 to-orange-500 text-white flex items-center justify-center shadow">
+              <span className="text-sm font-bold">✓</span>
+            </div>
+            <div className="text-sm text-gray-800">
+              <p className="font-semibold">Installed!</p>
+              <p className="text-xs text-gray-700 mt-0.5">
+                Find 'imHungryAF' in your app drawer. To pin to Home, long-press the icon and drag it to your home screen.
+              </p>
+            </div>
+            <button onClick={() => setPostInstall(false)} className="ml-auto text-xs text-gray-500 hover:text-gray-700">Got it</button>
           </div>
         </div>
       </div>
