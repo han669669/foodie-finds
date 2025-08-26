@@ -218,4 +218,340 @@ export const foodPlaces = [
     image: "/images/gongjingliqiangguoyu.jpg",
     googlemaps: "https://maps.app.goo.gl/umR7SBQAXmpQqdF37"
   },
+  {
+    id: "21",
+    name: "Prawn Noodles > Fei Zai Pork Rib Prawn Noodles",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2760962369125262,
+      lng: 103.79340877116476
+    },
+    rating: 5,
+    review: "a hidden gem that's been serving up a legacy of incredible prawn noodles since 1954! This legendary spot loads its bowls with succulent prawns, tender pork ribs, and flavorful pig tails, all tossed in a mix of sauces. It's a truly indulgent and hearty meal that's a must-try for any noodle lover!",
+    image: "/images/feizaiprawnnoodles.jpg",
+    googlemaps: "https://maps.app.goo.gl/oRmzMd9ifNZ5iBQ37"
+  },
+  {
+    id: "22",
+    name: "Hokkien Mee > Uncle Peter Hokkien Mee",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.287148267046983,
+      lng: 103.81333875040215
+    },
+    rating: 5,
+    review: "hidden away in a quiet coffeeshop, Uncle Peter serves up a truly satisfying plate of Hokkien Mee. His version is perfectly saucy with a balanced wok hei flavor that will have you coming back for more. Don't forget to add a punch of flavor with their incredible belachan chili! This is a solid plate of noodles that deserves more recognition.",
+    image: "/images/unclepeterhokkienmee.jpg",
+    googlemaps: "https://maps.app.goo.gl/SgQvcoP993g7dPHV9"
+  },
+  {
+    id: "23",
+    name: "Pizza > 168 Neapolitan Pizza",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3346643230943325,
+      lng: 103.72139509401035
+    },
+    rating: 5,
+    review: "a hidden pizza gem tucked away in a hawker centre, serving up restaurant-quality Neapolitan-style pizza! Each pie is made to order with a beautifully chewy and charred crust and incredible, fresh toppings. The pepperoni is a definite crowd-pleaser and a must-try for any pizza enthusiast.",
+    image: "/images/168neapolitanpizza.jpg",
+    googlemaps: "https://maps.app.goo.gl/j7YSgQu2uRZyHdwC9"
+  },
+  {
+    id: "24",
+    name: "Sichuan Dan Dan Noodles > An Yi Noodles",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2756860107350332,
+      lng: 103.84609837116477
+    },
+    rating: 5,
+    review: "serving up authentic Sichuan flavors, this cozy noodle shop in the CBD is a must-visit! The signature Dan Dan Mian features a flavorful, nutty, and spicy sauce that perfectly coats every noodle. A true taste of Sichuan that's sure to hit the spot for any fan of bold flavors!",
+    image: "/images/anyinoodles.jpg",
+    googlemaps: "https://maps.app.goo.gl/64LcmXaUZTQEtE3j8"
+  },
+  {
+    id: "25",
+    name: "Omurice > Tsukimi Hamburg",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3399203370489339,
+      lng: 103.70629932883523
+    },
+    rating: 5,
+    review: "an incredible encounter with the legendary Chef Motokichi! This omurice challenge was insane, featuring fluffy tornado eggs, a rich demi-glace, and juicy hamburg steaks. A truly spectacular dish that shows the chef's passion and skill. If you're looking for a legendary omurice experience, this is it!",
+    image: "/images/tsukimihamburg.jpg",
+    googlemaps: "https://maps.app.goo.gl/RvscERhFSGwTc8247"
+  },
+  {
+    id: "26",
+    name: "Steak > Wolfgang's Steakhouse Singapore",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.289863610824192,
+      lng: 103.83852317116478
+    },
+    rating: 5,
+    review: "a deep dive into one of Singapore's premier steakhouses! This place is all about high-quality, dry-aged beef, from their massive Porterhouse steaks to a creative take on Bak Kut Teh. The menu is loaded with impressive appetizers and classic, decadent desserts. A truly luxurious dining experience!",
+    image: "/images/wolfgangssteakhouse.jpg",
+    googlemaps: "https://maps.app.goo.gl/aH8rhbaoYkno9iEj9"
+  },
+  {
+    id: "27",
+    name: "Brazilian Churrasco Buffet > Brazil Churrasco",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3307924592033407,
+      lng: 103.7949929
+    },
+    rating: 5,
+    review: "get ready for a serious meat feast! As Singapore's first churrascaria, this place has been serving up authentic rodizio-style service since 1994. With 14 different cuts of juicy, tender meat brought directly to your table, it's a paradise for meat lovers. The grilled pineapple is a must-try!",
+    image: "/images/brazilchurrasco.jpg",
+    googlemaps: "https://maps.app.goo.gl/UjRMRvokzL4jrTBs5"
+  },
+  {
+    id: "28",
+    name: "Chee Cheong Fun > Yat Ka Yan",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2984719108788063,
+      lng: 103.856635
+    },
+    rating: 5,
+    review: "a unique twist on a classic! Yat Ka Yan is famous for their silky rice noodles, especially their creamy chee cheong fun topped with savory bak kwa. A must-try for anyone looking for a unique and flavourful take on a traditional dish.",
+    image: "/images/yatkayan.jpg",
+    googlemaps: "https://maps.app.goo.gl/sZETPJZzdk2e4ukR6"
+  },
+  {
+    id: "29",
+    name: "Fried Chicken > SIDES by the Sidemen",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2992877587294749,
+      lng: 103.85403060000003
+    },
+    rating: 5,
+    review: "is it worth the hype? This place is a fried chicken lover's paradise, with everything from perfectly crispy wings and tenders to juicy burgers. You can customize the heat level from mild to 'Insane' and choose from a huge selection of dipping sauces, including their delicious secret sauce. A must-try for any fried chicken fan!",
+    image: "/images/sidesbythesidemen.jpg",
+    googlemaps: "https://maps.app.goo.gl/fiNxt84LwaPYEehq8"
+  },
+  {
+    id: "30",
+    name: "Hotpot Buffet > Paradise Hotpot",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.4155739988222975,
+      lng: 103.91046881477293
+    },
+    rating: 5,
+    review: "an incredible find for hotpot lovers, offering a crazy value-for-money, all-you-can-eat Hong Kong-style buffet! With your own individual pot and a huge variety of meats and other ingredients, it's a hotpot paradise. The free-flow drinks and sides make this a feast you can't miss!",
+    image: "/images/paradisehotpot.jpg",
+    googlemaps: "https://maps.app.goo.gl/c3uE3XYYKggjNhFH7"
+  },
+  {
+    id: "31",
+    name: "Dosa Platter > MTR Singapore",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3130220630093812,
+      lng: 103.8565232
+    },
+    rating: 5,
+    review: "a legendary century-old institution for South Indian vegetarian cuisine! This insane Dosa Platter is a masterpiece, loaded with a huge variety of dosas, chutneys, and curries. It's a gigantic and delicious challenge, and a must-visit for any fan of authentic South Indian food.",
+    image: "/images/mtrsingapore.jpg",
+    googlemaps: "https://maps.app.goo.gl/wFeBWyVJT4QLuG9PA"
+  },
+  {
+    id: "32",
+    name: "Economic Rice Buffet > Xiao He Shan",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3336779370353045,
+      lng: 103.88809959999999
+    },
+    rating: 5,
+    review: "a fantastic find for an affordable and unlimited feast! This all-you-can-eat economic rice buffet offers a huge variety of dishes, giving you the freedom to pile your plate high with as much food as you want. It's a truly incredible deal that delivers on both value and variety.",
+    image: "/images/xiaoheshan.jpg",
+    googlemaps: "https://maps.app.goo.gl/MrqrXHGMwqcp447V8"
+  },
+  {
+    id: "33",
+    name: "Naan Platter > Usman Restaurant",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.309697284917656,
+      lng: 103.85398719999998
+    },
+    rating: 5,
+    review: "an incredible 7kg Pakistani naan platter at a legendary restaurant! This feast is loaded with a variety of freshly baked naans and is perfectly paired with rich, authentic Pakistani curries and meats. It's a delicious and intense challenge, and a must-try for anyone craving an authentic Pakistani food experience.",
+    image: "/images/usmanrestaurant.jpg",
+    googlemaps: "https://maps.app.goo.gl/wDmo7bhNzHhWyJ5K8"
+  },
+  {
+    id: "34",
+    name: "Wagyu Beef Ramen > LeNu Chef Wai's Noodle Bar",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2635679106596154,
+      lng: 103.82269627116477
+    },
+    rating: 5,
+    review: "a challenge of epic proportions! This massive 10kg wagyu beef ramen is a true test of a food warrior's will. With a rich and flavourful broth and tender wagyu beef, this is a delicious and intense experience. Think you have what it takes? This is the place to find out!",
+    image: "/images/lenuramen.jpg",
+    googlemaps: "https://maps.app.goo.gl/fXZBTKwaKDBf8i5r5"
+  },
+  {
+    id: "35",
+    name: "Hokkien Mee > Hokkien Mee @ 309 Hougang Ave 5",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3662320113213526,
+      lng: 103.89533027116478
+    },
+    rating: 5,
+    review: "an incredible find for old-school Hokkien Mee lovers! This hidden gem in Hougang serves up an authentic and delicious plate of Hokkien noodles. Recommended by a fellow food lover, this stall is a must-visit if you're craving a taste of tradition.",
+    image: "/images/hokkienmee309hougangave5.jpg",
+    googlemaps: "https://maps.app.goo.gl/WnrHqYocVB1PL3yR9"
+  },
+  {
+    id: "36",
+    name: "Prata Buffet > Springleaf Prata Place",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3579345854432912,
+      lng: 103.76789687116477
+    },
+    rating: 5,
+    review: "a prata lover's dream! For just $9.90, you get a free-flow, all-you-can-eat prata buffet with a huge variety of flavors, from classic kosong to cheese and onion cheese. Each one is freshly made and served with delicious fish and chicken curries. A truly unbeatable and affordable feast!",
+    image: "/images/springleafprataplace.jpg",
+    googlemaps: "https://maps.app.goo.gl/fZYKJub8WV9Kp9b89"
+  },
+  {
+    id: "37",
+    name: "Paella > Paelah",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2836551630716784,
+      lng: 103.81341259999999
+    },
+    rating: 5,
+    review: "an incredible 50-inch paella challenge at a hidden gem in Redhill! This massive, 30-serving fusion paella is a masterpiece and a true test of a food warrior's will. A delicious and intense experience, this is a must-visit for anyone looking for a unique and impressive paella feast!",
+    image: "/images/paelah.jpg",
+    googlemaps: "https://maps.app.goo.gl/GUCVQAJ7fByX2rga7"
+  },
+  {
+    id: "38",
+    name: "Nasi Jenganan > Gerai Nenek Obek",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.316651436998426,
+      lng: 103.89817007116476
+    },
+    rating: 5,
+    review: "a hidden gem at Geylang Serai serving an incredible Nasi Jenganan! This massive 8kg platter is loaded with rich peanut gravy over fluffy rice, along with a variety of delicious ingredients. It's a true test of a foodie's appetite and a must-try for a unique and flavourful experience.",
+    image: "/images/gerainenekobek.jpg",
+    googlemaps: "https://maps.app.goo.gl/X5kuEswUk73XxZSa8"
+  },
+  {
+    id: "39",
+    name: "Hainanese Chicken Rice > Ji Zai Ji (鸡仔记)",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3030772047030306,
+      lng: 103.86393672148442
+    },
+    rating: 5,
+    review: "my go-to spot for years, this incredible Hainanese Boneless Chicken Rice is a true hidden gem in the basement of Golden Mile hawker centre. With perfectly cooked chicken and fragrant rice, this is a chicken rice experience like no other!",
+    image: "/images/jizaiji.jpg",
+    googlemaps: "https://maps.app.goo.gl/MTKX47G34JUXfc8g9"
+  },
+  {
+    id: "40",
+    name: "Indian Curries > Gandhi Restaurant",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3081957971843854,
+      lng: 103.85132048036218
+    },
+    rating: 5,
+    review: "an incredible find for a true Indian food feast! This legendary restaurant in Little India offers unlimited curries served on traditional banana leaves. With unique Singapore and Malaysian influences on classic Indian dishes and must-trys like the Onion and Ginger Chicken, it’s a feast for all the senses!",
+    image: "/images/gandhirestaurant.jpg",
+    googlemaps: "https://maps.app.goo.gl/LAiRwP4dpBun313B6"
+  },
+  {
+    id: "41",
+    name: "Satay Beehoon > Guan Heng Cooked Food",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.4316173117697069,
+      lng: 103.82817827116476
+    },
+    rating: 5,
+    review: "an absolute hidden gem in Yishun that serves an incredible Satay Beehoon! This dish is so good that it completely changed my mind about it. The queue is insane and they sell out fast, but it's worth the wait for this delicious Singaporean delicacy!",
+    image: "/images/guanhengcookedfood.jpg",
+    googlemaps: "https://maps.app.goo.gl/dRMhfzZ3E3XagTDy9"
+  },
+  {
+    id: "42",
+    name: "Mala Hotpot > A Hot Hideout",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3015297152280718,
+      lng: 103.83634411409797
+    },
+    rating: 5,
+    review: "a hidden gem for Mala lovers! This place serves up the biggest and possibly best Mala in Singapore, with a huge 8kg bowl of spicy, numbing goodness. The signature Mala Collagen Soup is a game-changer, making this a definite go-to spot for an unforgettable Mala feast!",
+    image: "/images/ahothideout.jpg",
+    googlemaps: "https://maps.app.goo.gl/aorAMsRXRKUxb3Vt5"
+  },
+  {
+    id: "43",
+    name: "Moonlight Horfun > Keng Eng Kee Seafood",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.2857866037511079,
+      lng: 103.80370183922051
+    },
+    rating: 5,
+    review: "a challenging feast of epic proportions! This massive 7kg Moonlight Horfun is a testament to the heritage and innovation of KEK Seafood. Chef Wayne's addition of luxurious A5 Wagyu beef takes this iconic dish to a whole new level. A must-try for any fan of Zi Char cuisine!",
+    image: "/images/kekseafood.jpg",
+    googlemaps: "https://maps.app.goo.gl/pQBF5rhUYHMmEUsU9"
+  },
+  {
+    id: "44",
+    name: "Fried Chicken Burger > Mahmud's Tandoor",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3022702016424106,
+      lng: 103.85960207791192
+    },
+    rating: 5,
+    review: "an incredible find for a fried chicken burger! This halal-certified spot serves up an epic 6kg monster burger with a unique Indian-inspired twist. With its delicious masala seasoning and grilled or fried variations, it's a must-try for any food lover!",
+    image: "/images/mahmudstandoor.jpg",
+    googlemaps: "https://maps.app.goo.gl/a7jG8LtLgGkkmpwD8"
+  }
 ];
