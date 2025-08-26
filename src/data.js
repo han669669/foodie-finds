@@ -553,5 +553,19 @@ export const foodPlaces = [
     review: "an incredible find for a fried chicken burger! This halal-certified spot serves up an epic 6kg monster burger with a unique Indian-inspired twist. With its delicious masala seasoning and grilled or fried variations, it's a must-try for any food lover!",
     image: "/images/mahmudstandoorv1.jpg",
     googlemaps: "https://maps.app.goo.gl/a7jG8LtLgGkkmpwD8"
+  },
+  {
+    id: "45",
+    name: "BBQ Western Food Platter > Mad Charcoal",
+    influencer: "Zermatt Neo",
+    profilephoto: "/images/zermattneo.jpg",
+    coordinates: {
+      lat: 1.3859518114543663,
+      lng: 103.84549687116477
+    },
+    rating: 5,
+    review: "an absolute must-try for any fan of Western cuisine! This place serves up a massive 9kg BBQ platter with legendary chicken chop and tender beef cheeks, brisket, and pork ribs. With amazing sides like sweet potato fries and grilled pineapple, it's a charcoal-grilled feast you won't forget!",
+    image: "/images/madcharcoal.jpg",
+    googlemaps: "https://maps.app.goo.gl/42oVCwjYYoocxhkX9"
   }
 ];
