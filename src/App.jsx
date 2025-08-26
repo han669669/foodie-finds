@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import { foodPlaces } from './data';
 import ReloadPrompt from './components/ReloadPrompt';
+import { useTranslation } from 'react-i18next';
 
 // --- Enhanced Travel Time Estimation Constants ---
 
@@ -111,6 +112,7 @@ function App() {
     }
     return true;
   });
+  const { t, i18n } = useTranslation();
 
   // Track the kind of geolocation error to render better UX copy
   // Possible values: 'denied' | 'timeout' | 'unavailable' | 'unknown' | null
@@ -328,11 +330,11 @@ function App() {
           <div className="w-full bg-yellow-100 border-b border-yellow-300 text-yellow-900 px-4 py-2 flex items-center justify-center text-sm mb-4 rounded-t-lg shadow-sm">
             <div className="flex flex-col items-center w-full text-center">
               <span>
-                <strong>hey Hungry Friend !</strong>
+                <strong>{t('region.noticeTitle')}</strong>
                 <br />
-                imHungryAF is currently serving up recommendations only in <b>Singapore</b> and <b>Kuala Lumpur, Malaysia</b> for now.
+                {t('region.noticeBody')}
                 <br />
-                more cities coming soon...
+                {t('region.noticeMore')}
               </span>
             </div>
             <button
@@ -352,7 +354,19 @@ function App() {
                 </div>
                 <h1 className="text-4xl font-bold text-gray-800 cursor-pointer" onClick={() => setView('home')}>imHungryAF</h1>
             </div>
-            <p className="text-lg text-gray-600 mt-4">Discover the best eats recommended by your favorite influencers</p>
+            <div className="mt-3 flex justify-center gap-2">
+              <button
+                onClick={() => i18n.changeLanguage('en')}
+                className={`px-2 py-1 text-xs rounded transition-all ${ (i18n.resolvedLanguage || i18n.language).startsWith('en') ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700' }`}
+                aria-label="Switch to English"
+              >EN</button>
+              <button
+                onClick={() => i18n.changeLanguage('zh-Hans')}
+                className={`px-2 py-1 text-xs rounded transition-all ${ (i18n.resolvedLanguage || i18n.language) === 'zh-Hans' ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700' }`}
+                aria-label="切换到简体中文"
+              >中文</button>
+            </div>
+            <p className="text-lg text-gray-600 mt-4">{t('home.tagline')}</p>
         </header>
 
         {view === 'home' && (
@@ -361,10 +375,10 @@ function App() {
                     <div className="w-24 h-24 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i className="fa-solid fa-utensils text-white text-4xl"></i>
                     </div>
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">Find Nearby Eats</h2>
-                    <p className="text-gray-600 mb-6">Get personalized food recommendations from influencers within 60 minutes driving distance based on your current location.</p>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">{t('home.findNearby')}</h2>
+                    <p className="text-gray-600 mb-6">{t('home.description')}</p>
                     <button onClick={requestLocation} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all">
-                        <i className="fa-solid fa-location-arrow"></i> Find Food Near Me
+                        <i className="fa-solid fa-location-arrow"></i> {t('home.findNearMe')}
                     </button>
                 </div>
             </div>
@@ -414,19 +428,9 @@ function App() {
                         <div className="flex flex-col items-center md:items-start">
                             <div className="flex items-center space-x-2">
                                 <span className="font-semibold text-gray-800 text-sm md:text-base">
-                                    Featured Food Influencers
+                                    {t('home.featuredInfluencers')}
                                 </span>
-                                <span title="YouTube" className="text-red-500">
-                                    <svg
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        className="inline-block align-middle"
-                                    >
-                                        <path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.12C19.228 3.5 12 3.5 12 3.5s-7.228 0-9.386.566A2.994 2.994 0 0 0 .502 6.186C0 8.344 0 12 0 12s0 3.656.502 5.814a2.994 2.994 0 0 0 2.112 2.12C4.772 20.5 12 20.5 12 20.5s7.228 0 9.386-.566a2.994 2.994 0 0 0 2.112-2.12C24 15.656 24 12 24 12s0-3.656-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                                    </svg>
-                                </span>
+                                <i className="fa-solid fa-check-circle text-blue-500 text-xs"></i>
                             </div>
                             <span className="text-xs text-gray-500 mt-1 text-center md:text-left">
                                 Zermatt Neo 🇸🇬 • Ming Chun 🇲🇾 • Hungry Sam 🇲🇾
@@ -449,19 +453,19 @@ function App() {
                   <i className="fa-solid fa-star"></i>
                   <i className="fa-solid fa-star"></i>
                 </div>
-                <p className="text-gray-700">"imHungryAF's recommendations never disappoint!"</p>
+                <p className="text-gray-700">{t('home.testimonial')}</p>
               </div>
               <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
                 <div className="text-pink-500 mb-2">
                   <i className="fa-solid fa-route"></i>
                 </div>
-                <p className="text-gray-700">All recommendations within 60 minutes driving distance from you</p>
+                <p className="text-gray-700">{t('home.within60')}</p>
               </div>
               <div className="bg-white p-5 rounded-lg shadow-sm flex flex-col items-center text-center">
                 <div className="text-pink-500 mb-2">
                   <i className="fa-solid fa-user-check"></i>
                 </div>
-                <p className="text-gray-700">Only places personally reviewed by food influencers</p>
+                <p className="text-gray-700">{t('home.influencerOnly')}</p>
               </div>
             </div>
           </>
@@ -472,12 +476,12 @@ function App() {
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fa-solid fa-spinner text-blue-500 text-2xl animate-spin"></i>
                 </div>
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">Finding the best eats near you</h2>
-                <p className="text-gray-600">We're searching imHungryAF's recommendations in your area...</p>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">{t('loading.title')}</h2>
+                <p className="text-gray-600">{t('loading.subtitle')}</p>
                 {watching && (
                   <p className="text-xs text-gray-500 mt-2 icon-text">
                     <span className="w-2 h-2 rounded-full bg-blue-400 location-pulse"></span>
-                    Trying to get a GPS fix…
+                    {t('loading.gpsFix')}
                   </p>
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -504,18 +508,18 @@ function App() {
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-7">
                     <h2 className="text-xl md:text-3xl font-semibold text-gray-900 mb-4 md:mb-0 flex items-center gap-2">
                         <i className="fa-solid fa-location-dot text-blue-500"></i>
-                        <span>Nearby Recommendations</span>
+                        <span>{t('results.title')}</span>
                     </h2>
                     <div className="flex items-center">
-                        <span className="text-sm text-gray-500 mr-2">Sorted by:</span>
+                        <span className="text-sm text-gray-500 mr-2">{t('results.sortedByLabel')}</span>
                         <div className="relative">
                             <select
                                 value={sortOrder}
                                 onChange={e => setSortOrder(e.target.value)}
                                 className="appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             >
-                                <option value="nearest">Distance (nearest first)</option>
-                                <option value="furthest">Distance (furthest first)</option>
+                                <option value="nearest">{t('results.sort.nearest')}</option>
+                                <option value="furthest">{t('results.sort.furthest')}</option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                 <i className="fa-solid fa-chevron-down text-xs"></i>
@@ -525,14 +529,17 @@ function App() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-6">
-                    {sortedResults.map(place => (
+                    {sortedResults.map(place => {
+                        const localizedName = t(`places.${place.id}.name`, { defaultValue: place.name });
+                        const localizedReview = t(`places.${place.id}.review`, { defaultValue: place.review });
+                        return (
                         <div key={place.id} className="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover restaurant-card">
                             {/* Schema markup - invisible to users but visible to search engines */}
                             <script type="application/ld+json">
                               {JSON.stringify({
                                 "@context": "https://schema.org",
                                 "@type": "FoodEstablishment",
-                                "name": place.name,
+                                "name": localizedName,
                                 "image": place.image,
                                 "address": {
                                   "@type": "PostalAddress",
@@ -556,20 +563,20 @@ function App() {
                                     "name": place.influencer,
                                     "image": place.profilephoto || undefined
                                   },
-                                  "reviewBody": place.review.substring(0, 200) + (place.review.length > 200 ? "..." : "")
+                                  "reviewBody": localizedReview.substring(0, 200) + (localizedReview.length > 200 ? "..." : "")
                                 },
                                 "sameAs": place.googlemaps
                               })}
                             </script>
                             <div className="md:flex">
                                 <div className="md:w-1/3 h-48 md:h-auto">
-                                    <img src={place.image} alt={place.name} className="w-full h-full object-cover" loading="lazy" decoding="async" width="640" height="480" />
+                                    <img src={place.image} alt={localizedName} className="w-full h-full object-cover" loading="lazy" decoding="async" width="640" height="480" />
                                 </div>
                                 <div className="p-6 md:w-2/3 flex items-center justify-center flex-col">
                                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 w-full">
-                                        <h3 className="text-xl font-semibold text-gray-800">{place.name}</h3>
+                                        <h3 className="text-xl font-semibold text-gray-800">{localizedName}</h3>
                                         <span className="mt-4 mb-3 sm:mt-0 bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full sm:inline-block text-center">
-                                            {place.minutesAway} mins away
+                                            {t('results.minutesAway', { count: place.minutesAway })}
                                         </span>
                                     </div>
                                     <div className="flex items-center mb-4 w-full">
@@ -598,28 +605,29 @@ function App() {
                                             </div>
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 text-sm mb-4 text-center">"{place.review}"</p>
+                                    <p className="text-gray-600 text-sm mb-4 text-center">"{localizedReview}"</p>
                                     <div className="flex justify-between items-center w-full">
                                         <span className="icon-text text-xs text-gray-500">
-                                            <i className="fa-solid fa-location-dot"></i> {place.distanceKm.toFixed(2)} km
+                                            <i className="fa-solid fa-location-dot"></i> {t('results.distanceKm', { value: place.distanceKm.toFixed(2) })}
                                         </span>
                                         {place.googlemaps ? (
                                             <a href={place.googlemaps} target="_blank" rel="noopener noreferrer" className="icon-text text-sm font-medium text-blue-500 hover:text-blue-600 transition-all">
-                                                <i className="fa-solid fa-map-location-dot"></i> View on Maps
+                                                <i className="fa-solid fa-map-location-dot"></i> {t('results.viewOnMaps')}
                                             </a>
                                         ) : (
-                                            <span className="text-sm text-gray-400">No map available</span>
+                                            <span className="text-sm text-gray-400">{t('results.noMap')}</span>
                                         )}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <div className="mt-8 text-center">
                     <button onClick={() => setView('home')} className="icon-text bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-all">
-                        <i className="fa-solid fa-arrow-left"></i> Back to Home
+                        <i className="fa-solid fa-arrow-left"></i> {t('results.backToHome')}
                     </button>
                 </div>
             </>
@@ -631,37 +639,29 @@ function App() {
                     <i className="fa-solid fa-triangle-exclamation text-red-500 text-2xl"></i>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  {errorKind === 'denied' ? 'Location Access Required' : "Couldn't get your location"}
+                  {errorKind === 'denied' ? t('error.titleDenied') : t('error.titleGeneric')}
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  {errorKind === 'denied' && (
-                    <>We don't have permission to use your location. Enable it for your browser in Settings, then return and try again.</>
-                  )}
-                  {errorKind === 'timeout' && (
-                    <>It took too long to get a GPS fix. Please try again in an open area or check your connection.</>
-                  )}
-                  {errorKind === 'unavailable' && (
-                    <>Location is temporarily unavailable. Move to an open area or try again shortly.</>
-                  )}
-                  {(!errorKind || errorKind === 'unknown') && (
-                    <>We couldn't access your location. Please try again.</>
-                  )}
+                  {errorKind === 'denied' && t('error.paragraph.denied')}
+                  {errorKind === 'timeout' && t('error.paragraph.timeout')}
+                  {errorKind === 'unavailable' && t('error.paragraph.unavailable')}
+                  {(!errorKind || errorKind === 'unknown') && t('error.paragraph.unknown')}
                 </p>
                 {errorKind === 'denied' && isIOS() && (
                   <div className="text-xs text-gray-700 bg-gray-50 border border-gray-200 rounded-lg p-3 text-left -mt-4 mb-6">
                     <p className="icon-text font-medium text-gray-800 mb-2">
                       <i className="fa-solid fa-mobile-screen-button"></i>
-                      iOS: enable Safari location prompts again
+                      {t('error.ios.title')}
                     </p>
                     <ol className="list-decimal list-inside space-y-1">
-                      <li>Open <span className="font-medium">Settings</span></li>
-                      <li>Tap <span className="font-medium">Privacy & Security</span></li>
-                      <li>Tap <span className="font-medium">Location Services</span></li>
-                      <li>Tap <span className="font-medium">Safari Websites</span></li>
-                      <li>Select <span className="font-medium">Ask Next Time Or When I Share</span> or <span className="font-medium">While Using the App</span></li>
-                      <li>Return here and tap <span className="font-medium">Try Again</span></li>
+                      <li>{t('error.ios.steps.openSettings')}</li>
+                      <li>{t('error.ios.steps.privacy')}</li>
+                      <li>{t('error.ios.steps.locationServices')}</li>
+                      <li>{t('error.ios.steps.safariWebsites')}</li>
+                      <li>{t('error.ios.steps.selectAsk')}</li>
+                      <li>{t('error.ios.steps.returnHere')}</li>
                     </ol>
-                    <p className="text-[11px] text-gray-500 mt-2">If it still doesn't prompt, close this tab and reopen the site.</p>
+                    <p className="text-[11px] text-gray-500 mt-2">{t('error.ios.note')}</p>
                   </div>
                 )}
                 {import.meta.env.DEV && (lastError || permissionState) && (
@@ -672,10 +672,10 @@ function App() {
                 )}
                 <div className="flex items-center justify-center gap-3">
                   <button onClick={requestLocation} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
-                    <i className="fa-solid fa-location-arrow"></i> Try Again
+                    <i className="fa-solid fa-location-arrow"></i> {t('error.tryAgain')}
                   </button>
                   <button onClick={() => window.location.reload()} className="icon-text bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-all">
-                    <i className="fa-solid fa-arrows-rotate"></i> Refresh Page
+                    <i className="fa-solid fa-arrows-rotate"></i> {t('error.refresh')}
                   </button>
                 </div>
             </div>
@@ -686,10 +686,10 @@ function App() {
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fa-solid fa-search text-yellow-500 text-2xl"></i>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">No Nearby Spots Found</h3>
-                <p className="text-gray-600 mb-6">We couldn't find any imHungryAF recommended places within 60 minutes of your location. Check back later as we add more recommendations!</p>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">{t('noresults.title')}</h3>
+                <p className="text-gray-600 mb-6">{t('noresults.description')}</p>
                 <button onClick={() => setView('home')} className="icon-text bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all">
-                    <i className="fa-solid fa-home"></i> Back to Home
+                    <i className="fa-solid fa-home"></i> {t('results.backToHome')}
                 </button>
             </div>
         )}
@@ -701,11 +701,11 @@ function App() {
         <PWAInstallPrompt currentView={view} />
 
         <footer className="mt-16 text-center text-gray-500 text-sm">
-            <p> 2025 imHungryAF. All food recommendations are reviewed by influencers, data manually curated and web app made by <a href="https://www.craftedbyhan.xyz/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">han</a> .</p>
-            <p className="mt-3">This application uses your current location to find nearby recommendations within a 60-minute drive based on typical urban traffic conditions. Your location data is not stored as it is unnecessary.</p>
+            <p>{t('footer.creditPrefix', { year: new Date().getFullYear() })} <a href="https://www.craftedbyhan.xyz/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">han</a>{t('footer.creditSuffix')}</p>
+            <p className="mt-3">{t('footer.privacy')}</p>
             <br />
             <small>
-                This app estimates travel time without relying on external APIs or large country-specific datasets. It combines geodesic and grid-based distance formulas with heuristic adjustments for turns, time of day, curvature penalties, and dynamic speed modeling. The approach excludes detailed road hierarchy, traffic light delays, and day/night factors for simplicity. This lightweight method provides realistic ETAs while respecting user privacy and minimizing data usage.
+                {t('footer.disclaimer')}
             </small>
         </footer>
     </div>

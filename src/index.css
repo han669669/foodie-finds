@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', 'Heiti SC', 'Source Han Sans SC', 'Noto Sans', Arial, sans-serif;
   background-color: #f8fafc;
 }
 
