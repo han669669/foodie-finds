@@ -537,7 +537,7 @@ export const foodPlaces = [
     },
     rating: 5,
     review: "a challenging feast of epic proportions! This massive 7kg Moonlight Horfun is a testament to the heritage and innovation of KEK Seafood. Chef Wayne's addition of luxurious A5 Wagyu beef takes this iconic dish to a whole new level. A must-try for any fan of Zi Char cuisine!",
-    image: "/images/kekseafood.jpg",
+    image: "/images/kekseafoodv1.jpg",
     googlemaps: "https://maps.app.goo.gl/pQBF5rhUYHMmEUsU9"
   },
   {
@@ -551,7 +551,7 @@ export const foodPlaces = [
     },
     rating: 5,
     review: "an incredible find for a fried chicken burger! This halal-certified spot serves up an epic 6kg monster burger with a unique Indian-inspired twist. With its delicious masala seasoning and grilled or fried variations, it's a must-try for any food lover!",
-    image: "/images/mahmudstandoor.jpg",
+    image: "/images/mahmudstandoorv1.jpg",
     googlemaps: "https://maps.app.goo.gl/a7jG8LtLgGkkmpwD8"
   }
 ];
