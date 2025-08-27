@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import { foodPlaces } from './data';
 import ReloadPrompt from './components/ReloadPrompt';
+import ProgressiveImage from './components/ProgressiveImage';
 import { useTranslation } from 'react-i18next';
 
 // --- Enhanced Travel Time Estimation Constants ---
@@ -392,33 +393,27 @@ function App() {
                     <div className="flex flex-col md:flex-row items-center justify-center">
                         {/* Image section */}
                         <div className="flex -space-x-3 mb-2 md:mb-0 md:mr-6">
-                            <img
+                            <ProgressiveImage
                                 src="/images/zermattneo.jpg"
                                 alt="Zermatt Neo"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 1 }}
-                                loading="lazy"
-                                decoding="async"
                                 width="48"
                                 height="48"
                             />
-                            <img
+                            <ProgressiveImage
                                 src="/images/mingchun.jpg"
                                 alt="Ming Chun"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 2 }}
-                                loading="lazy"
-                                decoding="async"
                                 width="48"
                                 height="48"
                             />
-                            <img
+                            <ProgressiveImage
                                 src="/images/hungrysam.jpg"
                                 alt="Hungry Sam"
                                 className="w-12 h-12 rounded-full border-2 border-white shadow-md bg-white object-cover"
                                 style={{ zIndex: 3 }}
-                                loading="lazy"
-                                decoding="async"
                                 width="48"
                                 height="48"
                             />
@@ -570,7 +565,13 @@ function App() {
                             </script>
                             <div className="md:flex">
                                 <div className="md:w-1/3 h-48 md:h-auto">
-                                    <img src={place.image} alt={localizedName} className="w-full h-full object-cover" loading="lazy" decoding="async" width="640" height="480" />
+                                    <ProgressiveImage
+                                        src={place.image}
+                                        alt={localizedName}
+                                        className="w-full h-full object-cover"
+                                        width="640"
+                                        height="480"
+                                    />
                                 </div>
                                 <div className="p-6 md:w-2/3 flex items-center justify-center flex-col">
                                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 w-full">
@@ -581,7 +582,13 @@ function App() {
                                     </div>
                                     <div className="flex items-center mb-4 w-full">
                                         {place.profilephoto ? (
-                                            <img src={place.profilephoto} alt={place.influencer} className="w-10 h-10 rounded-full object-cover" loading="lazy" decoding="async" width="40" height="40" />
+                                            <ProgressiveImage
+                                                src={place.profilephoto}
+                                                alt={place.influencer}
+                                                className="w-10 h-10 rounded-full object-cover"
+                                                width="40"
+                                                height="40"
+                                            />
                                         ) : (
                                             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-orange-500 flex items-center justify-center text-white">
                                                 <i className="fa-solid fa-user"></i>
